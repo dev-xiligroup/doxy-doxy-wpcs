@@ -1,0 +1,75 @@
+// Settings in here override those in "${packages}/DocBlockr 2021 (DoxyDoxygen powered)/Doxy.sublime-settings",
+// and are overridden in turn by syntax-specific settings.
+// modified to be confirmed to WPCS for comments files and functions
+// soon for add_action and more...
+{
+    "min_spaces_between_columns": [ 1, 1 ],
+    "preferred_tabs_sizes": [ 10, 5, 5, 5, 5, 7 ],
+    "block_layout":{
+    "PhpDoc": [
+            // Auto-filled description for file header according WPCS.
+            {
+                "tags": [
+                    "This file implements {file_base_name:doxy_words();}.",
+                    "",
+                    "@author           {user_name:doxy_capitalize();}",
+                    "",
+                    "@link <URI>",
+                    "",
+                    "@package WordPress",
+                    "@subpackage {now:%Y}",
+                    "@since {now:%Y%m}",
+                    ""
+                ],
+                "context": [
+                    { "key": "row",      "operator": "lower_than",     "operand": "2" },
+                    { "key": "kind",     "operator": "equal",          "operand": "" }
+                ]
+            },
+            {
+                "tags": [
+                    "",
+                    "@_brief",
+                    "",
+                    "@var",
+                    "",
+                    "@param",
+                    "",
+                    "@throws",
+                    "",
+                    "@return",
+                    ""
+                ],
+                "context": [
+                    { "key": "kind",                                             "operator": "not_equal",  "operand": "" }
+                ]
+            }
+        ]
+    },
+    "autofill_rules": [
+        {
+            "parameter_description": [
+            "{parameter_name:doxy_undecorate();doxy_words(,);doxy_lower();doxy_The();}."
+            ]
+        },
+        {
+            "item_description": [
+                "Function {name:doxy_lower();} [to do]."
+            ],
+            "return_description": [
+                "{undecorated_name:doxy_words(1,);doxy_lower();doxy_The();}."
+            ],
+            "context": [
+                { "key": "kind", "operator": "regex_match",  "operand": "^(?:function|lambda)$" }
+            ]
+        },
+        {
+            "item_description": [
+                "Add_action {name:doxy_lower();} [to do]."
+            ],
+            "context": [
+                { "key": "{undecorated_name:doxy_lower();}",   "operator": "regex_match",  "operand": "^add" }
+            ]
+        }
+    ]
+}
