@@ -1,24 +1,24 @@
-// Settings in here override those in "${packages}/DocBlockr 2021 (DoxyDoxygen powered)/Doxy.sublime-settings",
+// Settings in here override those in "${packages}/DoxyDoxygen/Doxy.sublime-settings",
 // and are overridden in turn by syntax-specific settings.
 // modified to be confirmed to WPCS for comments files and functions
 // soon for add_action and more...
 {
     "min_spaces_between_columns": [ 1, 1 ],
     "preferred_tabs_sizes": [ 10, 5, 5, 5, 5, 7 ],
-    "block_layout":{
-    "PhpDoc": [
+    "block_layout": {
+        "PhpDoc": [
             // Auto-filled description for file header according WPCS.
             {
                 "tags": [
-                    "This file implements {file_base_name:doxy_words();}.",
+                    "@_brief This file implements {file_base_name:doxy_words();}.",
                     "",
-                    "@author           {user_name:doxy_capitalize();}",
+                    "@author {user_name:doxy_capitalize();}",
                     "",
-                    "@link <URI>",
+                    "@link",
                     "",
                     "@package WordPress",
                     "@subpackage {now:%Y}",
-                    "@since {now:%Y%m}",
+                    "@since {now:%Y-%m}",
                     ""
                 ],
                 "context": [
