@@ -54,6 +54,24 @@
         },
         {
             "item_description": [
+                "Searches for any matches {undecorated_name:doxy_words(2,);}."
+            ],
+            "context": [
+                { "key": "kind",                                            "operator": "regex_match",  "operand": "^(?:function|lambda)$" },
+                { "key": "{undecorated_name:doxy_words();doxy_lower();}",   "operator": "regex_match",  "operand": "^(?:index of|find|search) any" }
+            ]
+        },
+        {
+            "item_description": [
+                "Set the {undecorated_name:doxy_words(0,);}."
+            ],
+            "context": [
+                { "key": "kind",                                            "operator": "regex_match",  "operand": "^(?:function|lambda)$" },
+                { "key": "{undecorated_name:doxy_words(0);doxy_lower();}",  "operator": "regex_match",  "operand": "^settings$" }
+            ]
+        },
+        {
+            "item_description": [
                 "Function {name:doxy_lower();} [to do]."
             ],
             "return_description": [
@@ -63,13 +81,5 @@
                 { "key": "kind", "operator": "regex_match",  "operand": "^(?:function|lambda)$" }
             ]
         },
-        {
-            "item_description": [
-                "Add_action {name:doxy_lower();} [to do]."
-            ],
-            "context": [
-                { "key": "{undecorated_name:doxy_lower();}",   "operator": "regex_match",  "operand": "^add" }
-            ]
-        }
     ]
 }
