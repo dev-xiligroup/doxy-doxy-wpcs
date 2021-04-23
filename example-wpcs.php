@@ -32,7 +32,15 @@ function settings_scripts( $script_list ) {
  * @param    <type> $script_list The script list.
  */
 function find_any_launch( $script_list ) {
-	do_action( 'toto' );
+	/**
+	 * Fires [to allow a plugin to do a description]?
+	 *
+	 * @since [first version]
+	 * @param 'toto' [name of called actions].
+	 * @param <type> $value1 [description of argument passed to the callback].
+	 * @param <type> $value2 [description of argument passed to the callback].
+	 */
+	do_action( 'toto', $value1, $value2 );
 }
 
 /**
@@ -64,11 +72,14 @@ function twentyseventeen_content_width() {
 	}
 
 	/**
-	 * Filter Twenty Seventeen content width of the theme.
+	 * Applying the filters
 	 *
-	 * @since Twenty Seventeen 1.0
+	 * @since [first version]
 	 *
-	 * @param int $content_width Content width in pixels.
+	 * @var <type> $GLOBALS [result description].
+	 * @param 'content_width' [name of index].
+	 * @param 'twentyseventeen_content_width' [name of called filters].
+	 * @param <type> $content_width The original [description].
 	 */
 	$GLOBALS['content_width'] = apply_filters( 'twentyseventeen_content_width', $content_width );
 }
