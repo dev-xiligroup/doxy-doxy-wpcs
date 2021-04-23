@@ -12,6 +12,7 @@ The Script named comment_filters.py to upload in
 contains command “comment_filters” to add a detailled multilines comment (according PhpCS+WPCS) above :
 - apply_filters
 - do_action
+The command can be called via key bindings.
 
 As exercises and tests, some answers to these questions are solved:
 - what is view, region and point in sublime API ?
