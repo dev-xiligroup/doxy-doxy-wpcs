@@ -26,7 +26,7 @@ class CommentFiltersCommand(sublime_plugin.TextCommand):
 				self.view.insert(edit, self.view.text_point(line, 0), "\n")
 			self.view.run_command("move", { "by": "lines", "extend": False, "forward": False })
 
-		my_settings_name = 'CommentFilters.sublime.settings'
+		my_settings_name = 'CommentFilters.sublime-settings'
 		my_settings = sublime.load_settings(my_settings_name)
 		# list of dicts
 		# create default one

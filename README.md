@@ -27,3 +27,5 @@ As exercises and tests, some answers to these questions are solved:
 - how to do regex finding in the target line using Python re class ?
 - how to display char $ in insert_snippet command with escaping ?
 - how to pass arguments in class ?
+- how to manage dictionary and settings file ?
+- how to add a settings sub menu in package ?
