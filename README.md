@@ -6,6 +6,10 @@ copy the content of json in User part settings of doxydoxygen (menu preferences,
 
 ## Sublime Text 3 : python script to comment WP filters
 
+v 210426 - with settings in ~/Library/Application Support/Sublime Text 3/Packages/User named:
+- CommentFilters.sublime.settings (editable via Sublime preferences)
+User can now adapt the contents of labels and descriptions. 
+
 v 210423 - very first version
 The Script named comment_filters.py to upload in
 ~/Library/Application Support/Sublime Text 3/Packages/User
