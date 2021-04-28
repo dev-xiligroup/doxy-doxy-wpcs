@@ -1,0 +1,57 @@
+{
+	"anonymous":
+	{
+		"first_param_desc": "The first param [description].",
+		"key_or_param":
+		{
+			"index": "[key name] of ",
+			"string": ""
+		},
+		"name_key_or_string":
+		{
+			"index": "[key name].",
+			"string": "[the string]."
+		},
+		"param_desc":
+		{
+			"index": "[key description]",
+			"string": "[description]"
+		}
+	},
+	"apply_filters":
+	{
+		"first_param_desc": "The original (non filtered) [description].",
+		"name_of_called_filters": "[name of the called filters ].",
+		"name_of_key":
+		{
+			"index": "[key]",
+			"string": ""
+		},
+		"param_desc":
+		{
+			"index": "[key description]",
+			"string": "[description]"
+		},
+		"result_desc":
+		{
+			"index": "[key of result description]",
+			"string": "[result description]"
+		}
+	},
+	"do_action":
+	{
+		"arg_desc":
+		{
+			"index": "[key of argument]",
+			"string": "[description of argument passed to the callback]."
+		},
+		"name_of_called_actions":
+		{
+			"first": "[name of called actions].",
+			"index": "[key]",
+			"string": "!"
+		}
+	},
+	"updated": "updated to default: 100",
+	"@since": ""
+}

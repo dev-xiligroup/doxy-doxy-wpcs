@@ -1,0 +1,1 @@
+{"platforms": ["*"], "url": "https://github.com/dev-xiligroup/doxy-doxy-wpcs", "version": "0.1.2", "sublime_text": ">=3000", "dependencies": [], "description": "Exercises and tests : Completes doxydoxydoc to create comments - compatible to WPCS -  above WP filter functions like apply_filters, do_action or others."}
