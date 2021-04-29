@@ -12,6 +12,8 @@ copy the content of json in User part settings of doxydoxygen (menu preferences,
 - some improvements and better key detection (array)
 - …
 
+![Screenshot of WP php](../main/docs/CommentedFunctionCall.png)
+
 **v 210426** - with settings in ~/Library/Application Support/Sublime Text 3/Packages/User named:
 - CommentFilters.sublime.settings (editable via Sublime preferences)
 User can now adapt the contents of labels and descriptions. 
@@ -23,7 +25,7 @@ contains command “comment_filters” to add a detailled multilines comment (ac
 - apply_filters
 - do_action
 
-![Screenshot of WP php](../main/docs/CommentedFunctionCall.png)
+
 
 The command can be called via key bindings.
 
