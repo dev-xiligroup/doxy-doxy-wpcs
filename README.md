@@ -11,6 +11,7 @@ copy the content of json in User part settings of doxydoxygen (menu preferences,
 - In addition to apply_filters and do_action, script is now able to comment other function calls. ‘anonymous’ in User settings file.
 - some improvements and better key detection (array)
 - …
+[Screenshot of WP php](../main/docs/CommentedFunctionCall.png)
 
 <img src=“../main/docs/CommentedFunctionCall.png” title=“Commented Function Call” alt=“Screenshot Commented Function Call” />
 
