@@ -12,7 +12,7 @@ copy the content of json in User part settings of doxydoxygen (menu preferences,
 - some improvements and better key detection (array)
 - …
 
-![Screenshot of WP php](../main/docs/CommentedFunctionCall.png)
+<img src=“../main/docs/CommentedFunctionCall.png title=“Commented Function Call” alt=“Screenshot Commented Function Call”>
 
 **v 210426** - with settings in ~/Library/Application Support/Sublime Text 3/Packages/User named:
 - CommentFilters.sublime.settings (editable via Sublime preferences)
