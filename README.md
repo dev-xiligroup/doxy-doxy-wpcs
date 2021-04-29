@@ -25,7 +25,7 @@ contains command “comment_filters” to add a detailled multilines comment (ac
 - apply_filters
 - do_action
 
-
+![Screenshot of WP php](../main/docs/CommentedApply_Filters.png)
 
 The command can be called via key bindings.
 
