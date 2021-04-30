@@ -7,7 +7,6 @@ import sublime
 import sublime_plugin
 
 
-
 __copyright__ = "Copyright © 2021 Michel dev.xiligroup"
 __license__ = "GNU General Public License v2 or later"
 
@@ -17,7 +16,7 @@ __license__ = "GNU General Public License v2 or later"
 # v 210426 - settings file added
 # v 210423
 # v 210427 - add anonym function call
-# v 210430 - some improvements and pylint control
+# v 210430 - some improvements and pylint control - add format in since
 '''
     # examples of key bindings when cursor is in target line containing functions
 
@@ -33,6 +32,7 @@ __license__ = "GNU General Public License v2 or later"
 
 
 class CommentFiltersCommand(sublime_plugin.TextCommand):
+
     """
     Comment Filters.
 
@@ -44,7 +44,9 @@ class CommentFiltersCommand(sublime_plugin.TextCommand):
         """
         Comment Filters run.
 
-        Seems to be a wildcard to make all other params available w/o error message
+        Args:
+            edit (TYPE): Description
+            **args: Seems to be a wildcard to make all other params available w/o error message
         """
         def goto_start_previous():
             # goto start of previous line of the current cursor where is function to comment
@@ -65,6 +67,7 @@ class CommentFiltersCommand(sublime_plugin.TextCommand):
             dict_do_action = my_settings.get('do_action')
             dict_anonymous = my_settings.get('anonymous')
             dict_since = my_settings.get('@since')
+            dict_dev_id = my_settings.get('@by')
             # other function
         if not my_settings or not dict_apply_filters:
             default_dict['apply_filters'] = {
@@ -127,6 +130,15 @@ class CommentFiltersCommand(sublime_plugin.TextCommand):
                 since = args['@since']
             else:
                 since = '[my first version]'
+        now = datetime.now()  # used in since if format
+        # developer id
+        if dict_dev_id:  # from settings
+            dev_id = dict_dev_id
+        else:
+            ispresent = '@by' in args  # from args in key binding
+            if ispresent:
+                dev_id = args['@by']
+        # target function
         ispresent = 'function_name' in args
         if ispresent:
             searchfuncname = args['function_name']  # send via parameters args
@@ -140,8 +152,7 @@ class CommentFiltersCommand(sublime_plugin.TextCommand):
             apply_params = re.findall(r"(\$\w+|\'\w+')", cur_line)
 
             para = indent_line + "/**\n"
-            displaytime = datetime.now().strftime("%Y-%m")
-            para1 = indent_line + " * Applying the filters\n" + indent_line + " *\n" + indent_line + " * @since " + displaytime + " " + since + "\n" + indent_line + " *\n"
+            para1 = indent_line + " * Applying the filters\n" + indent_line + " *\n" + indent_line + " * @since " + since.format(now = now, dev = dev_id) + "\n" + indent_line + " *\n"
 
             para3 = indent_line + " */"
             # goto start of previous line
@@ -198,7 +209,7 @@ class CommentFiltersCommand(sublime_plugin.TextCommand):
         # end apply_filters
         elif not equal_pos and x and searchfuncname == 'do_action':
             para = indent_line + "/**\n"
-            para1 = indent_line + " * Fires [to allow a plugin to do a description]?\n" + indent_line + " *\n" + indent_line + " * @since " + since + "\n" + indent_line + " *\n"
+            para1 = indent_line + " * Fires [to allow a plugin to do a description]?\n" + indent_line + " *\n" + indent_line + " * @since " + since.format(now = now, dev = dev_id) + "\n" + indent_line + " *\n"
             para3 = indent_line + " */"
             # goto start of previous line
             goto_start_previous()
@@ -255,7 +266,7 @@ class CommentFiltersCommand(sublime_plugin.TextCommand):
                 apply_params = re.findall(r"(\$\w+|\'\w+')", cur_line)  # param and string
                 # indexes = re.findall ( "(\[ \$\w+ \]|\['\w+'])", cur_line ) # index between []
                 para = indent_line + "/**\n"
-                para1 = indent_line + " * Function call " + searchfuncname + "\n" + indent_line + " *\n" + indent_line + " * @since " + since + "\n" + indent_line + " *\n"
+                para1 = indent_line + " * Function call " + searchfuncname + "\n" + indent_line + " *\n" + indent_line + " * @since " + since.format(now = now, dev = dev_id) + "\n" + indent_line + " *\n"
 
                 para3 = indent_line + " */"
                 # goto start of previous line
