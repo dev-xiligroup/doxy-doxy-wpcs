@@ -6,6 +6,9 @@ copy the content of json in User part settings of doxydoxygen (menu preferences,
 
 ## Sublime Text 3 : python script to comment WP filters and function calls…
 
+**v 210430** - checked with pylint
+- format in @since
+
 **v 210428** - some major changes:
 - script is now in a folder uploadable in folder packages (don’t forget to add ‘Comment Filters’ in Package Control.sublime-settings - list : installed_packages. With this config, Main menu includes Preferences Settings from this folder !
 - In addition to apply_filters and do_action, script is now able to comment other function calls. ‘anonymous’ in User settings file.
@@ -42,3 +45,6 @@ As exercises and tests, some answers to these questions are solved:
 - how to add a settings sub-menu for preferences in package (Main.sublime-menu) ?
 - create package info visible in packages list command with metadata.json
 - how to create a package and avoid orphan deletion !
+- how to format string and date,
+- how to install/insert pylint with sublimelinter,
+- …
