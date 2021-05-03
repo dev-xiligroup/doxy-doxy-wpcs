@@ -8,7 +8,7 @@ copy the content of json in User part settings of doxydoxygen (menu preferences,
 
 **v 210503** - New name, New source’s structure
 
-To introduce modules and classes (*and to compare with previous code*), the new name of plugin is CommentCalls.
+To introduce modules and classes (*and to compare with previous code*), the new name of plugin is **CommentCalls**.
 
 - The previous source is split in (short) modules (1+6).
 - For commenting “anonymous” functions: rules, context and key can be multiple as visible in ‘CommentCalls.sublime-settings’. To apply rules, the first efficient in list is chosen. Inside a rule, all the keys must applicable !
