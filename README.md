@@ -42,7 +42,7 @@ contains command “comment_filters” to add a detailled multilines comment (ac
 
 The command can be called via key bindings.
 
-### As exercises and tests, some answers to these questions are solved:
+### As exercises and tests, answers and solutions to questions and problems have been found:
 - what is view, region and point in sublime API ?
 - how to create an empty line above the target line ?
 - basic features in Python
