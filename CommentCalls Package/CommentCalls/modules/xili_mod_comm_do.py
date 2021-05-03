@@ -3,10 +3,14 @@
 import re
 
 def Comment_do_action ( self, cur_line, indent_line, now ):
-    """Summary
-     Args:
-         cur_line (TYPE): Description‡
-         ident_line (TYPE): Description
+    """
+    Specific comments if do_action
+    Args:
+        cur_line (string): the current line to comment
+        indent_line (string): contains tabs
+        now (date): Description
+    Returns:
+        list: lines to insert
     """
     dict_do_action = self.dict_do_action
     apply_params = re.findall(r"(\$\w+|\'\w+')", cur_line)

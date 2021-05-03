@@ -44,8 +44,8 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
         run
 
         Args:
-            edit (TYPE): Description
-            **args: Description
+            edit (class): Api class
+            **args: dict of arguments (** = unknown by default)
         """
         def insert_comment_lines(linesp):
             for linep in linesp:

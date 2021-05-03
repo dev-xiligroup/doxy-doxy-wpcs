@@ -6,11 +6,11 @@ def Comment_Anonymous ( self, cur_line, indent_line, x, now, key_id ):
     """Summary
 
     Args:
-        cur_line (TYPE): Description
-        indent_line (TYPE): Description
-        x (TYPE): Description
-        now (TYPE): Description
-        key_id (TYPE): Description
+        cur_line (string): the current line to comment
+        indent_line (string): contains tabs
+        x (region) : where is the target name
+        now (date): Description
+        key_id (integer): id of the rule from settings
 
     Returns:
         TYPE: Description

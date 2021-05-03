@@ -1,7 +1,8 @@
-"""Summary
+""" default attributes
 
 Attributes:
-    person1 (TYPE): Description
+    default_dict (dict): Used if not sublime settings - see mod_calls_settings
+    person1 (dict): for tests
 """
 
 person1 = {

@@ -3,10 +3,16 @@
 import re
 
 def Comment_apply_filters ( self, cur_line, indent_line, x, now ):
-    """Summary
-     Args:
-         cur_line (TYPE): Description
-         ident_line (TYPE): Description
+    """
+    Specific comments if apply_filters
+    Args:
+        cur_line (string): the current line to comment
+        indent_line (string): contains tabs
+        x (region) : where is the target name
+        now (date): Description
+
+    Returns:
+        list: lines to insert
     """
     dict_apply_filters = self.dict_apply_filters
     apply_params = re.findall(r"(\$\w+|\'\w+')", cur_line)

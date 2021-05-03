@@ -1,7 +1,7 @@
 """
     Module xili_mod_calls_select
 
-    to select according context key list
+    to select according context keys list
 """
 import re
 
@@ -14,7 +14,7 @@ class CommentCallsSelect():
         """Summary
 
         Args:
-            searchfuncallname (TYPE): Description
+            searchfuncallname (string): target name
 
         Returns:
             integer: key selected in dict_anonymous
@@ -22,7 +22,7 @@ class CommentCallsSelect():
         keyr = -1
         key_d = 0
         while key_d < len(self.dict_anonymous):
-            # test if context is present, if not accept
+            # test if context is present, if not accept by default
             if not "context" in self.dict_anonymous[key_d]:
                 keyr = key_d
                 break
@@ -57,7 +57,7 @@ class CommentCallsSelect():
                         keyruler[key_k] = key_d
 
                 key_k += 1
-            # rule AND so all == key_d
+            # rule AND so all the keys == key_d
             co = keyruler.count(key_d)
             print(keyruler)
             if co == len(keyruler):
@@ -66,4 +66,3 @@ class CommentCallsSelect():
             key_d += 1
             # end while
         return keyr # anonymous key selected
-

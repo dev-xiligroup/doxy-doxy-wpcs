@@ -54,4 +54,3 @@ class CommentCallsSettings():
             my_settings.set('updated', 'updated to default: ' + str(settings_default))
             sublime.save_settings(my_settings_name)  # save default values
         return set_dict
-
