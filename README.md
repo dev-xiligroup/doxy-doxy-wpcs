@@ -6,6 +6,12 @@ copy the content of json in User part settings of doxydoxygen (menu preferences,
 
 ## Sublime Text 3 : python script to comment WP filters and function calls…
 
+**v 210503** - New name, New source’s structure
+To introduce modules and classes (*and to compare with previous code*), the new name of plugin is CommentCalls.
+The previous source is split in (short) modules (1+6).
+For “anonymous” functions, rules, context and key can be multiple as visible in ‘CommentCalls.sublime-settings’. To apply rules, the first efficient in list is chosen. Inside a rule, all the keys must applicable ! Soon more examples in docs. 
+
+
 **v 210430** - checked with pylint
 - format in @since
 
@@ -33,7 +39,7 @@ contains command “comment_filters” to add a detailled multilines comment (ac
 
 The command can be called via key bindings.
 
-As exercises and tests, some answers to these questions are solved:
+### As exercises and tests, some answers to these questions are solved:
 - what is view, region and point in sublime API ?
 - how to create an empty line above the target line ?
 - basic features in Python
@@ -47,4 +53,7 @@ As exercises and tests, some answers to these questions are solved:
 - how to create a package and avoid orphan deletion !
 - how to format string and date,
 - how to install/insert pylint with sublimelinter,
-- …
+#### SINCE OOP sources in sublime text 3 python’s context :
+- how to split a script in efficient modules
+- how to import (part or full) modules (and refresh during development time)
+- 
