@@ -39,6 +39,7 @@ class CommentCallsSelect():
                 operator = self.dict_anonymous[key_d]["context"][key_k]["operator"]
                 operand = self.dict_anonymous[key_d]["context"][key_k]["operand"]
                 # test if
+                print( 'operand: ' + operand)
                 x = re.search( operand, searchtarget )
                 if operator == "regex_match":
                     if x:

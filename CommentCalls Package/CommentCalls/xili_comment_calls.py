@@ -19,6 +19,8 @@ import sublime_plugin
 # import CommentCalls.modules.xili_mod_calls_settings as xili_mod_settings
 # imp.reload( xili_mod_settings ) # for dev
 from CommentCalls.modules.xili_mod_calls_settings import CommentCallsSettings
+import CommentCalls.modules.xili_mod_calls_select
+imp.reload( CommentCalls.modules.xili_mod_calls_select )
 from CommentCalls.modules.xili_mod_calls_select import CommentCallsSelect
 # imp.reload( CommentCallsSettings ) # for dev
 import CommentCalls.modules.xili_mod_comm_apply as xili_mod_comm_apply
