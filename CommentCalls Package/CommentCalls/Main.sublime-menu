@@ -29,10 +29,8 @@
                                     "file": "${packages}/CommentCalls/README.md"
                                 }
                             }
-                        ],
-
-                    },
-
+                        ]
+                    }
                 ]
             }
         ]
