@@ -21,9 +21,18 @@
                                 "args": {
                                     "file": "${packages}/User/CommentCalls.sublime-settings"
                                 }
+                            },
+                            {
+                                "caption": "ReadMe",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/CommentCalls/README.md"
+                                }
                             }
-                        ]
-                    }
+                        ],
+
+                    },
+
                 ]
             }
         ]
