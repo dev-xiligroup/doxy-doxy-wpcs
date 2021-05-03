@@ -7,9 +7,12 @@ copy the content of json in User part settings of doxydoxygen (menu preferences,
 ## Sublime Text 3 : python script to comment WP filters and function calls…
 
 **v 210503** - New name, New source’s structure
+
 To introduce modules and classes (*and to compare with previous code*), the new name of plugin is CommentCalls.
-The previous source is split in (short) modules (1+6).
-For “anonymous” functions, rules, context and key can be multiple as visible in ‘CommentCalls.sublime-settings’. To apply rules, the first efficient in list is chosen. Inside a rule, all the keys must applicable ! Soon more examples in docs. 
+
+- The previous source is split in (short) modules (1+6).
+- For commenting “anonymous” functions: rules, context and key can be multiple as visible in ‘CommentCalls.sublime-settings’. To apply rules, the first efficient in list is chosen. Inside a rule, all the keys must applicable !
+- Soon more examples in docs. 
 
 
 **v 210430** - checked with pylint
