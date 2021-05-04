@@ -18,11 +18,13 @@ import sublime_plugin
 # imp.reload( xili_mod_settings ) # for dev
 # import CommentCalls.modules.xili_mod_calls_settings as xili_mod_settings
 # imp.reload( xili_mod_settings ) # for dev
+import CommentCalls.modules.xili_mod_calls_settings
+imp.reload( CommentCalls.modules.xili_mod_calls_settings ) # for dev
 from CommentCalls.modules.xili_mod_calls_settings import CommentCallsSettings
 import CommentCalls.modules.xili_mod_calls_select
-imp.reload( CommentCalls.modules.xili_mod_calls_select )
+imp.reload( CommentCalls.modules.xili_mod_calls_select ) # for dev
 from CommentCalls.modules.xili_mod_calls_select import CommentCallsSelect
-# imp.reload( CommentCallsSettings ) # for dev
+
 import CommentCalls.modules.xili_mod_comm_apply as xili_mod_comm_apply
 imp.reload( xili_mod_comm_apply ) # for dev
 import CommentCalls.modules.xili_mod_comm_do as xili_mod_comm_do
@@ -54,8 +56,10 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 self.view.run_command("insert_snippet", {"contents": linep})
         def goto_start_previous():
             # goto start of previous line of the current cursor where is function to comment
+            # print( "sel " + str( len(self.view.sel())))
             for sel in self.view.sel():
                 line = self.view.rowcol(sel.begin())[0]
+                print(line)
                 self.view.insert(edit, self.view.text_point(line, 0), "\n")
             self.view.run_command("move", {"by": "lines", "extend": False, "forward": False})
 
@@ -74,6 +78,14 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 self.since = args['@since']
             else:
                 self.since = '[my first version]'
+        if a['author']: # xili_mod_settings.dict_author:  # from settings
+            self.author = a['author']
+        else:
+            ispresent = '@author' in args  # from args in key binding
+            if ispresent:
+                self.author = args['@author']
+            else:
+                self.author = ''
         now = datetime.now()  # used in since if format
         # developer id
         if a['dev_id']: # xili_mod_settings.dict_dev_id:  # from settings

@@ -49,6 +49,9 @@ def Comment_Anonymous ( self, cur_line, indent_line, x, now, key_id ):
     li = append_line(elements, li)
     elements = [" * @since ", self.since.format(now = now, dev = self.dev_id)]
     li = append_line(elements, li)
+    if self.author:
+        elements = [" * @author ", self.author]
+        li = append_line(elements, li)
     elements = [" *"]
     li = append_line(elements, li )
 

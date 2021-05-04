@@ -30,6 +30,7 @@ class CommentCallsSettings():
             set_dict['do_action'] = my_settings.get('do_action')
             set_dict['anonymous'] = my_settings.get('anonymous')
             set_dict['since'] = my_settings.get('@since')
+            set_dict['author'] = my_settings.get('@author')
             set_dict['dev_id'] = my_settings.get('@by')
         if set_dict['apply_filters'] and set_dict['do_action'] and set_dict['anonymous']:
             # minimum requested
