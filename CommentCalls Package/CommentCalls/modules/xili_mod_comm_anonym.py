@@ -15,24 +15,44 @@ def Comment_Anonymous ( self, cur_line, indent_line, x, now, key_id ):
     Returns:
         TYPE: Description
     """
+
+    def build_line( elements ):
+        linep = indent_line
+        for element in elements:
+            linep += element
+        linep += "\n"
+        return linep
+        #
+    def append_line( elements, l):
+        linep = build_line( elements )
+        linesp.append(linep)
+        l += 1
+        return l
+        #
+    fi = 0
+    linesp = []
+    li = 0
     dict_anonymous = self.dict_anonymous[key_id]
     searchfuncname = self.searchfuncallname
 
-    apply_params = re.findall(r"(\$\w+|\'\w+')", cur_line)  # param and string
-    fi = 0
-    linesp = []
-    l = 0
+    elements = ["/**"]
+    li = append_line(elements, li)
 
-    linep = indent_line + "/**\n"
-    linesp.append(linep)
-    l += 1
     if 'summary' in dict_anonymous:
-        linep = indent_line + " * " + dict_anonymous['summary'].format(funcname = searchfuncname) + "\n" + indent_line + " *\n" + indent_line + " * @since " + self.since.format(now = now, dev = self.dev_id) + "\n" + indent_line + " *\n"
+        elements = [ " * ", dict_anonymous['summary'].format(funcname = searchfuncname)]
+        li = append_line(elements, li)
     else:
-        linep = indent_line + " * Function call " + searchfuncname + "\n" + indent_line + " *\n" + indent_line + " * @since " + self.since.format(now = now, dev = self.dev_id) + "\n" + indent_line + " *\n"
-    linesp.append(linep)
-    l += 1
+        elements = [ " * Function call ", searchfuncname ]
+        li = append_line(elements, li)
 
+    elements = [" *"]
+    li = append_line(elements, li)
+    elements = [" * @since ", self.since.format(now = now, dev = self.dev_id)]
+    li = append_line(elements, li)
+    elements = [" *"]
+    li = append_line(elements, li )
+
+    apply_params = re.findall(r"(\$\w+|\'\w+')", cur_line)  # param and string
     for param in apply_params:
         # detect name
         if param == param.replace("$", r"\$"):
@@ -44,9 +64,15 @@ def Comment_Anonymous ( self, cur_line, indent_line, x, now, key_id ):
                 indice = 'string'
             if x0:
                 if x0.start() < x.start():
-                    linep = indent_line + " * @param " + param + " " + dict_anonymous['name_key_or_string'][indice] + "\n"
+                    elements = [
+                        " * @var ",
+                        param,
+                        " ",
+                        dict_anonymous['name_key_or_string'][indice]
+                    ]
                 else:
-                    linep = indent_line + " * @param " + param + " " + dict_anonymous['name_key_or_string'][indice] + "\n"
+                    elements = [" * @param ", param, " ", dict_anonymous['name_key_or_string'][indice] ]
+                linep = build_line( elements )
         else:
             the_param = param.replace("$", r"\$")
             only_param = "(" + the_param + r"[ ,\[])"
@@ -58,22 +84,22 @@ def Comment_Anonymous ( self, cur_line, indent_line, x, now, key_id ):
                 indice = 'string'
             if x1:
                 if x1.start() < x.start():
-                    linep = indent_line + " * @var <type> " + param.replace("$", r"\$") + " [" + dict_anonymous['key_or_param'][indice] + "result description].\n"
+                    elements = [" * @var <type> ", param.replace("$", r"\$"), " [", dict_anonymous['key_or_param'][indice], "result description]"  ]
                 else:
                     fi = fi + 1
                     if fi == 1:
-                        linep = indent_line + " * @param <type> " + param.replace("$", r"\$") + " " + dict_anonymous['first_param_desc'] + "\n"
+                        elements = [" * @param <type> ", param.replace("$", r"\$"), " ", dict_anonymous['first_param_desc']]
                     else:
-                        linep = indent_line + " * @param <type> " + param.replace("$", r"\$") + " " + dict_anonymous['param_desc'][indice] + "\n"
+                        elements = [" * @param <type> ", param.replace("$", r"\$"), " ", dict_anonymous['param_desc'][indice]]
+                linep = build_line( elements )
         if indice == 'index':
             # modify l-1 because previous is an array
-            linel = linesp[l - 1]
-            linesp[l - 1] = linel.replace("<type>", "array")
+            linel = linesp[li - 1]
+            linesp[li - 1] = linel.replace("<type>", "array")
         # list of lines
         linesp.append(linep)
-        l = l + 1
+        li = li + 1
     # end
-    linep = indent_line + " */"
+    linep = indent_line + " */" # w/o return
     linesp.append(linep)
-    l += 1
     return linesp
