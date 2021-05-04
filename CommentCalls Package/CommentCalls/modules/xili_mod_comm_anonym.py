@@ -13,7 +13,7 @@ def Comment_Anonymous ( self, cur_line, indent_line, x, now, key_id ):
         key_id (integer): id of the rule from settings
 
     Returns:
-        TYPE: Description
+        list:  comment lines
     """
 
     def build_line( elements ):
