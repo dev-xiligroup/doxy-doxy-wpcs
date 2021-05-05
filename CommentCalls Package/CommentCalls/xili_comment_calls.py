@@ -10,14 +10,11 @@ To introduce modules and classes (and to compare with previous code Comment Filt
 import imp  # not importlib with st3
 import re
 from datetime import datetime
-# import sublime
+import sublime
 import sublime_plugin
 
-# needs a prefix with plugin folder name w/o space.
-# import CommentCalls.modules.xili_mod_settings as xili_mod_settings
-# imp.reload( xili_mod_settings ) # for dev
-# import CommentCalls.modules.xili_mod_calls_settings as xili_mod_settings
-# imp.reload( xili_mod_settings ) # for dev
+# needs a prefix with plugin folder and name w/o space.
+
 import CommentCalls.modules.xili_mod_calls_settings
 imp.reload( CommentCalls.modules.xili_mod_calls_settings ) # for dev
 from CommentCalls.modules.xili_mod_calls_settings import CommentCallsSettings
@@ -39,7 +36,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
 
     """
     Comment Calls.
-
+    sub-class of sublime_plugin.TextCommand
     Writing function calls comments according WPCS
     command : comment_calls
     """
@@ -52,14 +49,18 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
             **args: dict of arguments (** = unknown by default)
         """
         def insert_comment_lines(linesp):
+            length = 0
             for linep in linesp:
                 self.view.run_command("insert_snippet", {"contents": linep})
+                length += len(linep.replace(r"\$","m"))
+            return length
+            #
         def goto_start_previous():
             # goto start of previous line of the current cursor where is function to comment
             # print( "sel " + str( len(self.view.sel())))
             for sel in self.view.sel():
                 line = self.view.rowcol(sel.begin())[0]
-                print(line)
+                # print(line)
                 self.view.insert(edit, self.view.text_point(line, 0), "\n")
             self.view.run_command("move", {"by": "lines", "extend": False, "forward": False})
 
@@ -96,11 +97,12 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 self.dev_id = args['@by']
             else:
                 self.dev_id = ""
-
-        posi = self.view.sel()[0].b
+        mycursor = self.view.sel()[0]
+        length = 0
+        posi = self.view.sel()[0].a
         # current line in "region"
         selection = self.view.full_line(posi)
-        row, col = self.view.rowcol(selection.begin())
+        row, col = self.view.rowcol(selection.begin()) # tuple of the start of the line
         # get indents
         indent_region = self.view.find('^\t+', self.view.text_point(row, 0))
         indent_line = self.view.substr(indent_region)
@@ -116,6 +118,10 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
         else:
             searchfuncname_w = self.view.word(posi)
             searchfuncname = self.view.substr(searchfuncname_w)
+
+        if re.search(r";|\(|\)|,|\[|\]", searchfuncname):
+             raise TypeError( searchfuncname + " <-- Cursor is not around a name of a function call !!!")
+
         x = re.search(searchfuncname, cur_line)
         if x and equal_pos and searchfuncname == 'apply_filters':
             # print ( searchfuncname )
@@ -146,9 +152,14 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 if in_selection > -1:
                     goto_start_previous()
                     linesp = xili_mod_comm_anonym.Comment_Anonymous( self, cur_line, indent_line, x, now, in_selection )
-                    insert_comment_lines( linesp )
+                    length = insert_comment_lines( linesp )
                 else:
                     print('no context and keys !')
                 # end anonymous
             else:
                 print('not a function or inside comment !')
+            # cursor move to original place
+            new_sel = []
+            new_sel.append(sublime.Region(mycursor.a + length + 1, mycursor.b + length + 1))
+            self.view.sel().clear()
+            self.view.sel().add_all(new_sel)
