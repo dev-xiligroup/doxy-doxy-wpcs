@@ -58,10 +58,10 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
         def goto_start_previous():
             # goto start of previous line of the current cursor where is function to comment
             # print( "sel " + str( len(self.view.sel())))
-            for sel in self.view.sel():
-                line = self.view.rowcol(sel.begin())[0]
+            sel = self.view.sel()[0] # instead - for sel in self.view.sel():
+            line = self.view.rowcol(sel.begin())[0] # row from point
                 # print(line)
-                self.view.insert(edit, self.view.text_point(line, 0), "\n")
+            self.view.insert(edit, self.view.text_point(line, 0), "\n")
             self.view.run_command("move", {"by": "lines", "extend": False, "forward": False})
 
         # a = xili_mod_settings.CommentCallsCommandSettings.settings( self )
@@ -160,6 +160,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 print('not a function or inside comment !')
             # cursor move to original place
             new_sel = []
+            # +1 because insertion inside goto_start_previous
             new_sel.append(sublime.Region(mycursor.a + length + 1, mycursor.b + length + 1))
             self.view.sel().clear()
             self.view.sel().add_all(new_sel)
