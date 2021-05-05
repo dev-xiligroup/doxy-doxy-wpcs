@@ -28,4 +28,6 @@ To introduce modules and classes (*and to compare with previous code*), the new 
 ### SINCE OOP sources in sublime text 3 python’s context :
 - how to split a script in efficient modules
 - how to import (part or full) modules (and refresh during development time)
+- how to move the cursor to his original position ? see end of main script !
+- discovering length of strings (len) issues if containing escaped char like $ in sublime buffer
 - …
