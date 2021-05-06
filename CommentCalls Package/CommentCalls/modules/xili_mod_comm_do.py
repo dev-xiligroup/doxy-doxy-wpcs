@@ -21,7 +21,16 @@ def Comment_do_action ( self, cur_line, indent_line, now ):
     linep = indent_line + "/**\n"
     linesp.append(linep)
     l += 1
-    linep = indent_line + " * Fires [to allow a plugin to do to describe]?\n" + indent_line + " *\n" + indent_line + " * @since " + self.since.format(now = now, dev = self.dev_id) + "\n" + indent_line + " *\n"
+    linep = indent_line + " * Fires [to allow a plugin to do to describe]?\n"
+    linesp.append(linep)
+    l += 1
+    linep = indent_line + " *\n"
+    linesp.append(linep)
+    l += 1
+    linep = indent_line + " * @since " + self.since.format(now = now, dev = self.dev_id) + "\n"
+    linesp.append(linep)
+    l += 1
+    linep = indent_line + " *\n"
     linesp.append(linep)
     l += 1
 

@@ -4,6 +4,7 @@
  inside functions in WP - 20210422 - xili
  implemented cases apply_filters and do_action
  # v 210503 - New name, New source’s structure
+ # v 210505 - add final cursor position choice (begin or end of comment or previous in target line)
 To introduce modules and classes (and to compare with previous code Comment Filters), the new name of plugin is CommentCalls.
 """
 
@@ -50,10 +51,12 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
         """
         def insert_comment_lines(linesp):
             length = 0
+            line_cursor = []
             for linep in linesp:
+                line_cursor.append([self.view.sel()[0], len(linep)]) # begin line in list
                 self.view.run_command("insert_snippet", {"contents": linep})
                 length += len(linep.replace(r"\$","m"))
-            return length
+            return length, line_cursor
             #
         def goto_start_previous():
             # goto start of previous line of the current cursor where is function to comment
@@ -97,7 +100,9 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 self.dev_id = args['@by']
             else:
                 self.dev_id = ""
+
         mycursor = self.view.sel()[0]
+
         length = 0
         posi = self.view.sel()[0].a
         # current line in "region"
@@ -127,13 +132,15 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
             # print ( searchfuncname )
             # goto start of previous line
             goto_start_previous()
+            begin_cursor = self.view.sel()[0]
             linesp = xili_mod_comm_apply.Comment_apply_filters( self, cur_line, indent_line, x, now )
-            insert_comment_lines( linesp )
+            length, lines_cursor = insert_comment_lines( linesp )
                 # end apply_filters
         elif not equal_pos and x and searchfuncname == 'do_action':
             goto_start_previous()
+            begin_cursor = self.view.sel()[0]
             linesp = xili_mod_comm_do.Comment_do_action( self, cur_line, indent_line, now )
-            insert_comment_lines( linesp )
+            length, lines_cursor = insert_comment_lines( linesp )
                 # end do_action
         else: # anonymous
             searchfuncname_w = self.view.word(posi)  # via word don't contain $ !
@@ -151,16 +158,42 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 in_selection = CommentCallsSelect.is_selected( self, self.searchfuncallname, cur_line )
                 if in_selection > -1:
                     goto_start_previous()
+                    begin_cursor = self.view.sel()[0]
                     linesp = xili_mod_comm_anonym.Comment_Anonymous( self, cur_line, indent_line, x, now, in_selection )
-                    length = insert_comment_lines( linesp )
+                    length, lines_cursor = insert_comment_lines( linesp )
                 else:
                     print('no context and keys !')
                 # end anonymous
             else:
                 print('not a function or inside comment !')
             # cursor move to original place
+        if 'cursor' in args:
             new_sel = []
-            # +1 because insertion inside goto_start_previous
-            new_sel.append(sublime.Region(mycursor.a + length + 1, mycursor.b + length + 1))
+            if args['cursor'] == 'previous':
+                # +1 because insertion inside goto_start_previous
+                new_sel.append(sublime.Region(mycursor.a + length + 1, mycursor.b + length + 1))
+            elif args['cursor'] == 'begin':
+                new_sel.append(sublime.Region(begin_cursor.a + len(indent_line), begin_cursor.b + len(indent_line)))
+            elif isinstance(args['cursor'],list): # row, col (not type() == list and not == 'list')
+                """
+                // example in key binding
+                { "keys": ["command+ctrl+i"],"command": "comment_calls", "args": {"cursor": [3,10] }}
+                """
+                line_cursor, len_line = lines_cursor[args['cursor'][0]]
+                #print(line_cursor)
+                #print(args['cursor'][1])
+                #print(len_line)
+                # tab_in_space = self.view.settings().get('tab_size') * len(indent_line)
+                #print(len(indent_line))
+                if len_line - len(indent_line) > args['cursor'][1]:
+                    colcur = args['cursor'][1]
+                else:
+                    colcur = len_line - len(indent_line) - 1
+                new_sel.append(sublime.Region(
+                    line_cursor.a + len(indent_line) + colcur, # if tab one ident per \t (not space)
+                    line_cursor.b + len(indent_line) + colcur
+                ))
             self.view.sel().clear()
             self.view.sel().add_all(new_sel)
+
+        # end of comment (end)
