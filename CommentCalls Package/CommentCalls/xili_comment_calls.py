@@ -166,7 +166,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 # end anonymous
             else:
                 print('not a function or inside comment !')
-            # cursor move to original place
+            # cursor move to original place, begin, one line and col or end of intserted comment
         if 'cursor' in args:
             new_sel = []
             if args['cursor'] == 'previous':
@@ -175,17 +175,17 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
             elif args['cursor'] == 'begin':
                 new_sel.append(sublime.Region(begin_cursor.a + len(indent_line), begin_cursor.b + len(indent_line)))
             elif isinstance(args['cursor'],list): # row, col (not type() == list and not == 'list')
-                """
+                '''
                 // example in key binding
                 { "keys": ["command+ctrl+i"],"command": "comment_calls", "args": {"cursor": [3,10] }}
-                """
+                '''
                 line_cursor, len_line = lines_cursor[args['cursor'][0]]
                 #print(line_cursor)
                 #print(args['cursor'][1])
                 #print(len_line)
                 # tab_in_space = self.view.settings().get('tab_size') * len(indent_line)
                 #print(len(indent_line))
-                if len_line - len(indent_line) > args['cursor'][1]:
+                if len_line - len(indent_line) > args['cursor'][1]: # to avoid going to next line
                     colcur = args['cursor'][1]
                 else:
                     colcur = len_line - len(indent_line) - 1
