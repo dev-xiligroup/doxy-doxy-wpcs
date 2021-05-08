@@ -3,6 +3,9 @@
 This package is a new big upgrade of Comment Filters package
 
 ## history
+**v 210508** - More OOP - a new branch named 00P-210508
+comment is now a class and sub classes with instanciate and build() method
+
 **v 210503** - New name, New source’s structure
 
 To introduce modules and classes (*and to compare with previous code*), the new name of plugin is CommentCalls.
