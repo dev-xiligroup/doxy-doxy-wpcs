@@ -194,7 +194,12 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                     begin_cursor = self.view.sel()[0]
                     # linesp = xili_mod_comm_anonym.Comment_Anonymous( self, cur_line, indent_line, x, now, in_selection )
                     CommentAnonym = xili_mod_comment_anonym.CommentAnonym( indent_line, now, in_selection, self ) # sub class
-                    nbl, linesp = CommentAnonym.build_comment( indent_line, cur_line, x ) #
+                    nbl, linesp = CommentAnonym.build_comment( indent_line, cur_line, x )
+                    # demo for inserting lines
+                    if "insertline" in self.dict_anonymous[in_selection]:
+                        if isinstance(self.dict_anonymous[in_selection]["insertline"], dict):
+                            insertline = self.dict_anonymous[in_selection]["insertline"]
+                            nbl, linesp = CommentAnonym.insert_line(insertline["pos"],insertline["elements"])
                     length, lines_cursor = insert_comment_lines( linesp )
                 else:
                     print('no context and keys !')

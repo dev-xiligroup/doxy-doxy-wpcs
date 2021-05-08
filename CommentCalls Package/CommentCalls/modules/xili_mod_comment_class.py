@@ -38,9 +38,11 @@ class CommentClass():
             TYPE: Description
         """
         linep = self.indent_line
+
         for element in elements:
             linep += element
         linep += "\n"
+
         return linep
         #
     def append_line(self, elements, l ):
@@ -62,16 +64,24 @@ class CommentClass():
         l += 1
         return l
         #
-    def insert_line(self, elements, pos ):
+    def insert_line(self, pos, elements ):
         """Summary
         Args:
             elements (TYPE): Description
             pos (TYPE): Description
         """
         # test if possible
+        if elements:
+            elements.insert(0, ' * ')
+        else:
+            elements.insert(0, ' *') # empty line
+
         if 1 < pos < self.li:
             linep = CommentClass.build_line( self, elements )
+
             self.linesp.insert( pos, linep)
+            self.li += 1
+        return self.li, self.linesp
             #
     def pop_line(self, pos ):
         """Summary
@@ -83,7 +93,7 @@ class CommentClass():
         r = -1
         if 1 < pos < self.li:
             r = self.linesp.pop( pos )
-            self.li -= self.li
+            self.li -= 1
             return self.li, self.linesp
 
     def first_line (self, li):

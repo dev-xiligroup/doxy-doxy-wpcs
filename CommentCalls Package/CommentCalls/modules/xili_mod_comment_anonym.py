@@ -123,5 +123,6 @@ class CommentAnonym(CommentClass):
             li = li + 1
 
         li = self.footer_lines( li ) # in parent class
+        self.li = li # to be used in insert
         return li, self.linesp
         #
