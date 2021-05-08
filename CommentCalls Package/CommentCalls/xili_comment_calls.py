@@ -5,6 +5,8 @@
  implemented cases apply_filters and do_action
  # v 210503 - New name, New source’s structure
  # v 210505 - add final cursor position choice (begin or end of comment or previous in target line)
+ # v 210508 - comment is now an objet (class) and 3 subclasses
+
 To introduce modules and classes (and to compare with previous code Comment Filters), the new name of plugin is CommentCalls.
 """
 
@@ -23,12 +25,14 @@ import CommentCalls.modules.xili_mod_calls_select
 imp.reload( CommentCalls.modules.xili_mod_calls_select ) # for dev
 from CommentCalls.modules.xili_mod_calls_select import CommentCallsSelect
 
-import CommentCalls.modules.xili_mod_comm_apply as xili_mod_comm_apply
-imp.reload( xili_mod_comm_apply ) # for dev
-import CommentCalls.modules.xili_mod_comm_do as xili_mod_comm_do
-imp.reload( xili_mod_comm_do ) # for dev
-import CommentCalls.modules.xili_mod_comm_anonym as xili_mod_comm_anonym
-imp.reload( xili_mod_comm_anonym ) # for dev
+import CommentCalls.modules.xili_mod_comment_class as xili_mod_comment
+imp.reload( xili_mod_comment ) # for dev
+import CommentCalls.modules.xili_mod_comment_do as xili_mod_comment_do
+imp.reload( xili_mod_comment_do ) # for dev
+import CommentCalls.modules.xili_mod_comment_apply as xili_mod_comment_apply
+imp.reload( xili_mod_comment_apply ) # for dev
+import CommentCalls.modules.xili_mod_comment_anonym as xili_mod_comment_anonym
+imp.reload( xili_mod_comment_anonym ) # for dev
 
 __copyright__ = "Copyright © 2021 Michel dev.xiligroup"
 __license__ = "GNU General Public License v2 or later"
@@ -77,16 +81,16 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
         if a['since']: # xili_mod_settings.dict_since:  # from settings
             self.since = a['since']
         else:
-            ispresent = '@since' in args  # from args in key binding
-            if ispresent:
+            # from args in key binding
+            if '@since' in args:
                 self.since = args['@since']
             else:
                 self.since = '[my first version]'
         if a['author']: # xili_mod_settings.dict_author:  # from settings
             self.author = a['author']
         else:
-            ispresent = '@author' in args  # from args in key binding
-            if ispresent:
+            # from args in key binding
+            if '@author' in args:
                 self.author = args['@author']
             else:
                 self.author = ''
@@ -117,29 +121,39 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
         # regex limited to the line
         equal_pos = re.search(" = ", cur_line)
         # target function
-        ispresent = 'function_name' in args
-        if ispresent:
+
+        if 'function_name' in args:
             searchfuncname = args['function_name']  # send via parameters args
         else:
             searchfuncname_w = self.view.word(posi)
             searchfuncname = self.view.substr(searchfuncname_w)
 
         if re.search(r";|\(|\)|,|\[|\]", searchfuncname):
-             raise TypeError( searchfuncname + " <-- Cursor is not around a name of a function call !!!")
+            sublime.error_message("[CommentCalls] Cursor is not around a name of a function call.")
+            raise TypeError( searchfuncname + " <-- Cursor is not around a name of a function call !!!")
 
         x = re.search(searchfuncname, cur_line)
+        self.searchfuncname = searchfuncname
         if x and equal_pos and searchfuncname == 'apply_filters':
             # print ( searchfuncname )
             # goto start of previous line
             goto_start_previous()
             begin_cursor = self.view.sel()[0]
-            linesp = xili_mod_comm_apply.Comment_apply_filters( self, cur_line, indent_line, x, now )
+            #linesp = xili_mod_comm_apply.Comment_apply_filters( self, cur_line, indent_line, x, now )
+            CommentApply = xili_mod_comment_apply.CommentApply( indent_line, now, '', self ) # sub class
+            nbl, linesp = CommentApply.build_comment( indent_line, cur_line, x ) #
             length, lines_cursor = insert_comment_lines( linesp )
                 # end apply_filters
         elif not equal_pos and x and searchfuncname == 'do_action':
             goto_start_previous()
             begin_cursor = self.view.sel()[0]
-            linesp = xili_mod_comm_do.Comment_do_action( self, cur_line, indent_line, now )
+            #linesp = xili_mod_comm_do.Comment_do_action( self, cur_line, indent_line, now )
+            #length, lines_cursor = insert_comment_lines( linesp )
+            # Comment = xili_mod_comment.CommentClass( indent_line )
+            # print(Comment.build_comment(indent_line, "baratin du comment")) # empty_comment(0))
+            #
+            CommentDo = xili_mod_comment_do.CommentDo( indent_line, now, '', self ) # sub class
+            nbl, linesp = CommentDo.build_comment( indent_line, cur_line ) #
             length, lines_cursor = insert_comment_lines( linesp )
                 # end do_action
         else: # anonymous
@@ -159,7 +173,9 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 if in_selection > -1:
                     goto_start_previous()
                     begin_cursor = self.view.sel()[0]
-                    linesp = xili_mod_comm_anonym.Comment_Anonymous( self, cur_line, indent_line, x, now, in_selection )
+                    # linesp = xili_mod_comm_anonym.Comment_Anonymous( self, cur_line, indent_line, x, now, in_selection )
+                    CommentAnonym = xili_mod_comment_anonym.CommentAnonym( indent_line, now, in_selection, self ) # sub class
+                    nbl, linesp = CommentAnonym.build_comment( indent_line, cur_line, x ) #
                     length, lines_cursor = insert_comment_lines( linesp )
                 else:
                     print('no context and keys !')
