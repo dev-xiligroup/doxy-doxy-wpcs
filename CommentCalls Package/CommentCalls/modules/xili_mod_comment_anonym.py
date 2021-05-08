@@ -36,24 +36,23 @@ class CommentAnonym(CommentClass):
         dict_anonymous = self.calling_self.dict_anonymous[self.key_id]
         searchfuncname = self.calling_self.searchfuncname
         #
-        elements = ["/**"]
-        li = self.append_line( elements, li)
+        li = self.first_line (li)
         if 'summary' in dict_anonymous:
-            elements = [ " * ", dict_anonymous['summary'].format(funcname = searchfuncname)]
+            elements = [ dict_anonymous['summary'].format(funcname = searchfuncname)]
             li = self.append_line( elements, li )
         else:
-            elements = [ " * ", "Function call {funcname} [description]".format(funcname = searchfuncname), "." ]
+            elements = [ "Function call {funcname} [description]".format(funcname = searchfuncname), "." ]
             li = self.append_line( elements, li )
 
-        elements = [" *"]
+        elements = []
         li = self.append_line( elements, li )
         # print(self.calling_self.since)
-        elements = [" * @since ", self.calling_self.since.format(now = self.now, dev = self.calling_self.dev_id)]
+        elements = ["@since ", self.calling_self.since.format(now = self.now, dev = self.calling_self.dev_id)]
         li = self.append_line( elements, li )
         if self.calling_self.author:
-            elements = [" * @author ", self.calling_self.author]
+            elements = ["@author ", self.calling_self.author]
             li = self.append_line( elements, li )
-        elements = [" *"]
+        elements = []
         li = self.append_line( elements, li )
         #
         return li
@@ -92,7 +91,8 @@ class CommentAnonym(CommentClass):
                             dict_anonymous['name_key_or_string'][indice]
                         ]
                     else:
-                        elements = [" * @param ", param, " ", dict_anonymous['name_key_or_string'][indice] ]
+                        elements = ["@param ", param, " ", dict_anonymous['name_key_or_string'][indice] ]
+                    elements.insert(0, ' * ')
                     linep = self.build_line( elements )
             else:
                 the_param = param.replace("$", r"\$")
@@ -105,13 +105,14 @@ class CommentAnonym(CommentClass):
                     indice = 'string'
                 if x1:
                     if x1.start() < x.start():
-                        elements = [" * @var <type> ", param.replace("$", r"\$"), " [", dict_anonymous['key_or_param'][indice], "result description]"  ]
+                        elements = ["@var <type> ", param.replace("$", r"\$"), " [", dict_anonymous['key_or_param'][indice], "result description]"  ]
                     else:
                         fi = fi + 1
                         if fi == 1:
-                            elements = [" * @param <type> ", param.replace("$", r"\$"), " ", dict_anonymous['first_param_desc']]
+                            elements = ["@param <type> ", param.replace("$", r"\$"), " ", dict_anonymous['first_param_desc']]
                         else:
-                            elements = [" * @param <type> ", param.replace("$", r"\$"), " ", dict_anonymous['param_desc'][indice]]
+                            elements = ["@param <type> ", param.replace("$", r"\$"), " ", dict_anonymous['param_desc'][indice]]
+                    elements.insert(0, ' * ')
                     linep = self.build_line( elements )
             if indice == 'index':
                 # modify l-1 because previous is an array

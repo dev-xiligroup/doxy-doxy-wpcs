@@ -21,7 +21,7 @@ class CommentApply(CommentClass):
 
         CommentClass.__init__(self, indent_line )
         self.now = now
-        self.key_id = key_id # not yet used
+        self.key_id = key_id
         self.calling_self = calling_self
         self.filter_name = "vide"
         #
@@ -34,27 +34,27 @@ class CommentApply(CommentClass):
         Returns:
             TYPE: Description
         """
-        dict_apply_filters = self.calling_self.dict_apply_filters
+        dict_apply_filters = self.calling_self.dict_apply_filters[self.key_id]
+
         # searchfuncname = self.calling_self.searchfuncname
         #
-        elements = ["/**"]
-        li = self.append_line( elements, li)
+        li = self.first_line (li)
         if 'summary' in dict_apply_filters:
-            elements = [ " * ", dict_apply_filters['summary'].format(filtername = self.filter_name)]
+            elements = [ dict_apply_filters['summary'].format(filtername = self.filter_name)]
             li = self.append_line( elements, li )
         else:
-            elements = [ " * ", "Applying all the filters named {filtername}.".format(filtername = self.filter_name) ]
+            elements = [ "Applying all the filters named {filtername}.".format(filtername = self.filter_name) ]
             li = self.append_line( elements, li )
 
-        elements = [" *"]
+        elements = []
         li = self.append_line( elements, li )
         # print(self.calling_self.since)
-        elements = [" * @since ", self.calling_self.since.format(now = self.now, dev = self.calling_self.dev_id)]
+        elements = ["@since ", self.calling_self.since.format(now = self.now, dev = self.calling_self.dev_id)]
         li = self.append_line( elements, li )
         if self.calling_self.author:
-            elements = [" * @author ", self.calling_self.author]
+            elements = ["@author ", self.calling_self.author]
             li = self.append_line( elements, li )
-        elements = [" *"]
+        elements = []
         li = self.append_line( elements, li )
         #
         return li
@@ -67,7 +67,8 @@ class CommentApply(CommentClass):
             summary (TYPE): Description
         """
         self.indent_line = indent_line # can be not the same when instancing !
-        dict_apply_filters = self.calling_self.dict_apply_filters
+
+        dict_apply_filters = self.calling_self.dict_apply_filters[self.key_id]
         # self.summary = summary
         li = 0
         #
@@ -84,11 +85,12 @@ class CommentApply(CommentClass):
                     indice = 'string'
                 if x0:
                     if x0.start() < x.start():
-                         elements = [ " * @param ", param, " ", dict_apply_filters['name_of_key'][indice], "."]
+                        elements = [ "@param ", param, " ", dict_apply_filters['name_of_key'][indice], "."]
                     else:
                         # param contains the quotes
                         self.filter_name = param
-                        elements = [ " * @param ", param, " ", dict_apply_filters['name_of_called_filters']]
+                        elements = [ "@param ", param, " ", dict_apply_filters['name_of_called_filters']]
+                    elements.insert(0, ' * ')
                     linep = self.build_line( elements )
             else:
                 the_param = param.replace("$", r"\$")
@@ -101,13 +103,14 @@ class CommentApply(CommentClass):
                     indice = 'string'
                 if x1:
                     if x1.start() < x.start():
-                        elements = [ " * @var <type> ", param.replace("$", r"\$"), " ", dict_apply_filters['result_desc'][indice], "."]
+                        elements = [ "@var <type> ", param.replace("$", r"\$"), " ", dict_apply_filters['result_desc'][indice], "."]
                     else:
                         fi = fi + 1
                         if fi == 1:
-                            elements = [ " * @param <type> ", param.replace("$", r"\$"), " ", dict_apply_filters['first_param_desc']]
+                            elements = [ "@param <type> ", param.replace("$", r"\$"), " ", dict_apply_filters['first_param_desc']]
                         else:
-                            elements = [ " * @param <type> ", param.replace("$", r"\$"), " ", dict_apply_filters['param_desc'][indice]]
+                            elements = [ "@param <type> ", param.replace("$", r"\$"), " ", dict_apply_filters['param_desc'][indice]]
+                    elements.insert(0, ' * ')
                     linep = self.build_line( elements )
 
             if indice == 'index':
@@ -126,5 +129,6 @@ class CommentApply(CommentClass):
         self.linesp.extend(lines_body)
         li += li_body
         li = self.footer_lines( li ) # in parent class
+        self.li = li # to be used in insert
         return li, self.linesp
         #

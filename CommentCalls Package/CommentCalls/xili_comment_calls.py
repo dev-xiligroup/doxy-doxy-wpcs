@@ -135,26 +135,45 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
         x = re.search(searchfuncname, cur_line)
         self.searchfuncname = searchfuncname
         if x and equal_pos and searchfuncname == 'apply_filters':
-            # print ( searchfuncname )
-            # goto start of previous line
-            goto_start_previous()
-            begin_cursor = self.view.sel()[0]
-            #linesp = xili_mod_comm_apply.Comment_apply_filters( self, cur_line, indent_line, x, now )
-            CommentApply = xili_mod_comment_apply.CommentApply( indent_line, now, '', self ) # sub class
-            nbl, linesp = CommentApply.build_comment( indent_line, cur_line, x ) #
-            length, lines_cursor = insert_comment_lines( linesp )
+            # selection or not
+            if isinstance(self.dict_apply_filters, list ):
+                in_selection = CommentCallsSelect.is_selected( self, searchfuncname, cur_line, self.dict_apply_filters )
+            else:
+                in_selection = 0
+                self.dict_apply_filters = [ self.dict_apply_filters ]
+            if in_selection > -1:
+                # goto start of previous line
+                goto_start_previous()
+                begin_cursor = self.view.sel()[0]
+                #linesp = xili_mod_comm_apply.Comment_apply_filters( self, cur_line, indent_line, x, now )
+                CommentApply = xili_mod_comment_apply.CommentApply( indent_line, now, in_selection, self ) # sub class
+                nbl, linesp = CommentApply.build_comment( indent_line, cur_line, x ) #
+                length, lines_cursor = insert_comment_lines( linesp )
+            else:
+                print('no context and keys !')
                 # end apply_filters
         elif not equal_pos and x and searchfuncname == 'do_action':
-            goto_start_previous()
-            begin_cursor = self.view.sel()[0]
-            #linesp = xili_mod_comm_do.Comment_do_action( self, cur_line, indent_line, now )
-            #length, lines_cursor = insert_comment_lines( linesp )
-            # Comment = xili_mod_comment.CommentClass( indent_line )
-            # print(Comment.build_comment(indent_line, "baratin du comment")) # empty_comment(0))
-            #
-            CommentDo = xili_mod_comment_do.CommentDo( indent_line, now, '', self ) # sub class
-            nbl, linesp = CommentDo.build_comment( indent_line, cur_line ) #
-            length, lines_cursor = insert_comment_lines( linesp )
+            # selection or not
+            if isinstance(self.dict_do_action, list ):
+                in_selection = CommentCallsSelect.is_selected( self, searchfuncname, cur_line, self.dict_do_action )
+            else:
+                in_selection = 0
+                self.dict_do_action = [ self.dict_do_action ]
+            if in_selection > -1:
+                goto_start_previous()
+                begin_cursor = self.view.sel()[0]
+                #linesp = xili_mod_comm_do.Comment_do_action( self, cur_line, indent_line, now )
+                #length, lines_cursor = insert_comment_lines( linesp )
+                # Comment = xili_mod_comment.CommentClass( indent_line )
+                # print(Comment.build_comment(indent_line, "baratin du comment")) # empty_comment(0))
+                #
+                CommentDo = xili_mod_comment_do.CommentDo( indent_line, now, in_selection, self ) # sub class
+                nbl, linesp = CommentDo.build_comment( indent_line, cur_line )
+                if "popline" in self.dict_do_action[in_selection]:
+                    nbl, linesp = CommentDo.pop_line(self.dict_do_action[in_selection]["popline"]) # example 4 = @author
+                length, lines_cursor = insert_comment_lines( linesp )
+            else:
+                print('no context and keys !')
                 # end do_action
         else: # anonymous
             searchfuncname_w = self.view.word(posi)  # via word don't contain $ !
@@ -169,7 +188,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 not_in_comment = True
             if not (("$" + self.searchfuncallname) in cur_line) and not (("'" + self.searchfuncallname + "'") in cur_line) and not_in_comment:
                 # select the good function name according settings
-                in_selection = CommentCallsSelect.is_selected( self, self.searchfuncallname, cur_line )
+                in_selection = CommentCallsSelect.is_selected( self, self.searchfuncallname, cur_line, self.dict_anonymous )
                 if in_selection > -1:
                     goto_start_previous()
                     begin_cursor = self.view.sel()[0]

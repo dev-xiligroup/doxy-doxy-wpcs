@@ -8,9 +8,10 @@ import re
 class CommentCallsSelect():
     """
         manage selections
+        w/o __init__, this class is not really an object, the self is the calling main class "self"
     """
 
-    def is_selected (self, searchfuncallname, searchline):
+    def is_selected (self, searchfuncallname, searchline, current_dict ):
         """Summary
 
         Args:
@@ -19,25 +20,26 @@ class CommentCallsSelect():
         Returns:
             integer: key selected in dict_anonymous
         """
+        # current_dict = self.dict_anonymous
         keyr = -1
         key_d = 0
-        while key_d < len(self.dict_anonymous):
+        while key_d < len(current_dict):
             # test if context is present, if not accept by default
-            if not "context" in self.dict_anonymous[key_d]:
+            if not "context" in current_dict[key_d]:
                 keyr = key_d
                 break
-            print(len(self.dict_anonymous[key_d]["context"]))
+            print(len(current_dict[key_d]["context"]))
             key_k = 0
             keyruler = []
-            while key_k < len(self.dict_anonymous[key_d]["context"]):
+            while key_k < len(current_dict[key_d]["context"]):
                 keyruler.append(-1)
-                key_k_kind = self.dict_anonymous[key_d]["context"][key_k]["key"]
+                key_k_kind = current_dict[key_d]["context"][key_k]["key"]
                 if key_k_kind == "line":
                     searchtarget = searchline
                 else:
                     searchtarget = searchfuncallname
-                operator = self.dict_anonymous[key_d]["context"][key_k]["operator"]
-                operand = self.dict_anonymous[key_d]["context"][key_k]["operand"]
+                operator = current_dict[key_d]["context"][key_k]["operator"]
+                operand = current_dict[key_d]["context"][key_k]["operand"]
                 # test if
                 print( 'operand: ' + operand)
                 x = re.search( operand, searchtarget )

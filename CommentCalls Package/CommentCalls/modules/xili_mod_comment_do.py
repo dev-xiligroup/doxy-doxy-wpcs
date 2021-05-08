@@ -20,7 +20,7 @@ class CommentDo(CommentClass):
     def __init__(self, indent_line, now, key_id, calling_self ):
         CommentClass.__init__(self, indent_line )
         self.now = now
-        self.key_id = key_id # not yet used
+        self.key_id = key_id
         self.calling_self = calling_self
         self.filter_name = "vide"
         #
@@ -33,27 +33,26 @@ class CommentDo(CommentClass):
         Returns:
             TYPE: Description
         """
-        dict_do_action = self.calling_self.dict_do_action
+        dict_do_action = self.calling_self.dict_do_action[self.key_id]
         # searchfuncname = self.calling_self.searchfuncname
         #
-        elements = ["/**"]
-        li = self.append_line( elements, li)
+        li = self.first_line (li)
         if 'summary' in dict_do_action:
-            elements = [ " * ", dict_do_action['summary'].format(funcname = self.filter_name)]
+            elements = [ dict_do_action['summary'].format(funcname = self.filter_name)]
             li = self.append_line( elements, li )
         else:
-            elements = [ " * ", "Fires to allow a plugin to do actions named {filtername}.".format(filtername = self.filter_name) ]
+            elements = [ "Fires to allow a plugin to do actions named {filtername}.".format(filtername = self.filter_name) ]
             li = self.append_line( elements, li )
 
-        elements = [" *"]
+        elements = []
         li = self.append_line( elements, li )
         # print(self.calling_self.since)
-        elements = [" * @since ", self.calling_self.since.format(now = self.now, dev = self.calling_self.dev_id)]
+        elements = ["@since ", self.calling_self.since.format(now = self.now, dev = self.calling_self.dev_id)]
         li = self.append_line( elements, li )
         if self.calling_self.author:
-            elements = [" * @author ", self.calling_self.author]
+            elements = ["@author ", self.calling_self.author]
             li = self.append_line( elements, li )
-        elements = [" *"]
+        elements = []
         li = self.append_line( elements, li )
         #
         return li
@@ -66,7 +65,7 @@ class CommentDo(CommentClass):
             summary (TYPE): Description
         """
         self.indent_line = indent_line # can be not the same when instancing !
-        dict_do_action = self.calling_self.dict_do_action
+        dict_do_action = self.calling_self.dict_do_action[self.key_id]
         # self.summary = summary
         li = 0
         # dict_comment = self.dict_do_action # for test from calling class
@@ -87,7 +86,8 @@ class CommentDo(CommentClass):
                         self.filter_name = param
                     else:
                         indice = 'string'
-                elements = [ " * @param ", param, " ", dict_do_action['name_of_called_actions'][indice] ]
+                elements = [ "@param ", param, " ", dict_do_action['name_of_called_actions'][indice] ]
+                elements.insert(0, ' * ')
                 linep = self.build_line( elements )
 
             else:
@@ -96,7 +96,8 @@ class CommentDo(CommentClass):
                     indice = 'index'
                 else:
                     indice = 'string'
-                elements = [ " * @param <type> ", param.replace("$", r"\$"), " ", dict_do_action['arg_desc'][indice]]
+                elements = [ "@param <type> ", param.replace("$", r"\$"), " ", dict_do_action['arg_desc'][indice]]
+                elements.insert(0, ' * ')
                 linep = self.build_line( elements )
             if indice == 'index':
                 # modify l-1 because previous is an array
@@ -114,5 +115,6 @@ class CommentDo(CommentClass):
         self.linesp.extend(lines_body)
         li += li_body
         li = self.footer_lines( li ) # in parent class
+        self.li = li # to be used in insert
         return li, self.linesp
         #

@@ -53,10 +53,44 @@ class CommentClass():
         Returns:
             TYPE: Description
         """
+        if elements:
+            elements.insert(0, ' * ')
+        else:
+            elements.insert(0, ' *') # empty line
         linep = CommentClass.build_line( self, elements )
         self.linesp.append(linep)
         l += 1
         return l
+        #
+    def insert_line(self, elements, pos ):
+        """Summary
+        Args:
+            elements (TYPE): Description
+            pos (TYPE): Description
+        """
+        # test if possible
+        if 1 < pos < self.li:
+            linep = CommentClass.build_line( self, elements )
+            self.linesp.insert( pos, linep)
+            #
+    def pop_line(self, pos ):
+        """Summary
+        Args:
+            elements (TYPE): Description
+            pos (TYPE): Description
+        """
+        # test if possible
+        r = -1
+        if 1 < pos < self.li:
+            r = self.linesp.pop( pos )
+            self.li -= self.li
+            return self.li, self.linesp
+
+    def first_line (self, li):
+        linep = self.indent_line + "/**" # w/o return
+        linep += "\n"
+        self.linesp.append(linep)
+        return li
         #
     def header_lines( self, li):
         """Summary
@@ -67,10 +101,8 @@ class CommentClass():
         Returns:
             TYPE: Description
         """
-        elements = ["/**"]
-        li = self.append_line(elements, li)
-
-        elements = [" *"]
+        li = self.first_line( li )
+        elements = []
         li = self.append_line(elements, li )
         return li
         #
@@ -100,5 +132,6 @@ class CommentClass():
         elements = [" *", summary ]
         li = self.append_line(elements, li )
         li = self.footer_lines( li )
+        self.li = li # to be used in insert
         return li, self.linesp
         #
