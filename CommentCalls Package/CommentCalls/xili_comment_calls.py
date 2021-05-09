@@ -169,8 +169,10 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 #
                 CommentDo = xili_mod_comment_do.CommentDo( indent_line, now, in_selection, self ) # sub class
                 nbl, linesp = CommentDo.build_comment( indent_line, cur_line )
+                # post treatment before insertion (ex. pop a line)
                 if "popline" in self.dict_do_action[in_selection]:
-                    nbl, linesp = CommentDo.pop_line(self.dict_do_action[in_selection]["popline"]) # example 4 = @author
+                    nbl, linesp, del_line = CommentDo.pop_line(self.dict_do_action[in_selection]["popline"]) # example 4 = @author
+                    print(del_line)
                 length, lines_cursor = insert_comment_lines( linesp )
             else:
                 print('no context and keys !')
@@ -195,7 +197,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                     # linesp = xili_mod_comm_anonym.Comment_Anonymous( self, cur_line, indent_line, x, now, in_selection )
                     CommentAnonym = xili_mod_comment_anonym.CommentAnonym( indent_line, now, in_selection, self ) # sub class
                     nbl, linesp = CommentAnonym.build_comment( indent_line, cur_line, x )
-                    # demo for inserting lines
+                    # post treatment before insertion (ex. with insertion)
                     if "insertline" in self.dict_anonymous[in_selection]:
                         if isinstance(self.dict_anonymous[in_selection]["insertline"], dict):
                             insertline = self.dict_anonymous[in_selection]["insertline"]
@@ -207,6 +209,9 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
             else:
                 print('not a function or inside comment !')
             # cursor move to original place, begin, one line and col or end of intserted comment
+            # example in key binding
+            #   { "keys": ["command+ctrl+i"],"command": "comment_calls", "args": {"cursor": [3,10] }}
+            #
         if 'cursor' in args:
             new_sel = []
             if args['cursor'] == 'previous':
@@ -215,10 +220,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
             elif args['cursor'] == 'begin':
                 new_sel.append(sublime.Region(begin_cursor.a + len(indent_line), begin_cursor.b + len(indent_line)))
             elif isinstance(args['cursor'],list): # row, col (not type() == list and not == 'list')
-                '''
-                // example in key binding
-                { "keys": ["command+ctrl+i"],"command": "comment_calls", "args": {"cursor": [3,10] }}
-                '''
+
                 line_cursor, len_line = lines_cursor[args['cursor'][0]]
                 #print(line_cursor)
                 #print(args['cursor'][1])

@@ -1,6 +1,6 @@
 # Sublime Text 3 : python script to comment WP filters and function calls…
 
-This package is a new big upgrade of Comment Filters package
+This package is a new big upgrade of Comment Filters package. The main script uses 7 scripts in modules folder.
 
 ## history
 **v 210508** - More OOP - a new branch named 00P-210508
@@ -29,8 +29,11 @@ To introduce modules and classes (*and to compare with previous code*), the new 
 - how to format string and date,
 - how to install/insert pylint with sublimelinter,
 ### SINCE OOP sources in sublime text 3 python’s context :
-- how to split a script in efficient modules
+- how to split a script in efficient modules with classes and function.
 - how to import (part or full) modules (and refresh during development time)
 - how to move the cursor to his original position ? see end of main script !
 - discovering length of strings (len) issues if containing escaped char like $ in sublime buffer
+- classes are not always object. “self” args can be a source of confusion.
+- sub class and __init__
+- to test type, it is better to use isinstance().
 - …

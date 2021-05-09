@@ -8,13 +8,17 @@ from CommentCalls.modules.xili_mod_comment_class import CommentClass
 
 class CommentDo(CommentClass):
 
-    """ sub class to comment do_action
+    """sub class to comment do_action
+    In this case, param's lines are built before header to fin filter_name
 
     Attributes:
         calling_self (CommentClass): a way to collect infos from calling (not parent) class
-        indent_line (TYPE): Description
-        key_id (TYPE): Description
-        now (TYPE): Description
+        filter_name (str): Name of the filter/action
+        indent_line (str): tabulation of the lines
+        key_id (int): Id of selected settings
+        li (int): row
+        now (date): today
+
     """
 
     def __init__(self, indent_line, now, key_id, calling_self ):

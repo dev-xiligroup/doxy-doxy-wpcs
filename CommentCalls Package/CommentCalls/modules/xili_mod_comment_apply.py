@@ -8,15 +8,16 @@ from CommentCalls.modules.xili_mod_comment_class import CommentClass
 
 class CommentApply(CommentClass):
 
-    """ sub class to comment do_action
-
+    """sub class to comment apply_filters
+    In this case, param's lines are built before header to fin filter_name
     Attributes:
         calling_self (CommentClass): a way to collect infos from calling (not parent) class
-        indent_line (TYPE): Description
-        key_id (TYPE): Description
-        now (TYPE): Description
+        filter_name (str): Name of the filter/action
+        indent_line (str): tabulation of the lines
+        key_id (int): Id of selected settings
+        li (int): row
+        now (date): today
     """
-
     def __init__(self, indent_line, now, key_id, calling_self ):
 
         CommentClass.__init__(self, indent_line )
@@ -32,7 +33,7 @@ class CommentApply(CommentClass):
             li (int): count of lines
 
         Returns:
-            TYPE: Description
+            int: new row
         """
         dict_apply_filters = self.calling_self.dict_apply_filters[self.key_id]
 
@@ -60,11 +61,15 @@ class CommentApply(CommentClass):
         return li
         #
     def build_comment(self, indent_line, cur_line, x ):
-        """ build a very tiny comment
+        """build a comment
 
         Args:
-            indent_line (TYPE): Description
-            summary (TYPE): Description
+            indent_line (str): tabulation of the lines
+            cur_line (str): the target line
+            x (re): result of search
+
+        Returns:
+            row and list lines
         """
         self.indent_line = indent_line # can be not the same when instancing !
 

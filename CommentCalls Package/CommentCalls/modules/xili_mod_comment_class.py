@@ -1,15 +1,17 @@
-'''xili_mod_comment_class and his sub-class
+'''xili_mod_comment_class
 '''
 class CommentClass():
 
-    def __init__(self, indent_line ):
-        """Summary
+    """Summary
 
-        Args:
-            indent_line (TYPE): Description
-            now (TYPE): Description
-            key_id (TYPE): Description
-        """
+    Attributes:
+        indent_line (string): Tab before each line
+        li (int): row
+        linesp (list): lines of the comment
+    """
+
+    def __init__(self, indent_line ):
+
         self.indent_line = indent_line
         self.linesp = []
         self.li = 0
@@ -18,10 +20,10 @@ class CommentClass():
         """Summary
 
         Args:
-            li (TYPE): Description
+            li (int): row
 
         Returns:
-            TYPE: Description
+            row and list lines
         """
         li = self.header_lines(li)
         li = self.footer_lines(li)
@@ -32,10 +34,10 @@ class CommentClass():
         """Summary
 
         Args:
-            elements (TYPE): Description
+            elements (list): Description
 
         Returns:
-            TYPE: Description
+            string: built line
         """
         linep = self.indent_line
 
@@ -53,7 +55,7 @@ class CommentClass():
             l (TYPE): Description
 
         Returns:
-            TYPE: Description
+            int: new row
         """
         if elements:
             elements.insert(0, ' * ')
@@ -66,9 +68,13 @@ class CommentClass():
         #
     def insert_line(self, pos, elements ):
         """Summary
+
         Args:
-            elements (TYPE): Description
             pos (TYPE): Description
+            elements (TYPE): Description
+
+        Returns:
+            row and list lines
         """
         # test if possible
         if elements and elements[0] != "":
@@ -84,11 +90,15 @@ class CommentClass():
         return self.li, self.linesp
             #
     def insert_paragraph(self, pos, elements ):
-        """ Insert
+        """Insert
             multiples lines
+
         Args:
             pos (int): row based 0
             elements (list): must be (or not) a list of list of elements
+
+        Returns:
+            row and list lines
         """
         # test elements as list of lists
         if isinstance(elements, list):
@@ -104,18 +114,32 @@ class CommentClass():
         #
     def pop_line(self, pos ):
         """Summary
+
         Args:
-            elements (TYPE): Description
             pos (TYPE): Description
+
+        Deleted Parameters:
+            elements (TYPE): Description
+
+        Returns:
+            row and list lines
         """
         # test if possible
-        r = ''
+        r = 'none deleted'
         if 1 < pos < self.li:
             r = self.linesp.pop( pos )
             self.li -= 1
-        return self.li, self.linesp
+        return self.li, self.linesp,r
 
     def first_line (self, li):
+        """Summary
+
+        Args:
+            li (int): current row
+
+        Returns:
+            int: new row
+        """
         linep = self.indent_line + "/**" # w/o return
         linep += "\n"
         self.linesp.append(linep)
@@ -128,7 +152,7 @@ class CommentClass():
             li (TYPE): Description
 
         Returns:
-            TYPE: Description
+            int: new row
         """
         li = self.first_line( li )
         elements = []
@@ -140,17 +164,23 @@ class CommentClass():
 
         Args:
             li (TYPE): Description
+
+        Returns:
+            int: new row
         """
         linep = self.indent_line + " */" # w/o return
         self.linesp.append(linep)
         return li
 
     def build_comment(self, indent_line, summary ):
-        """ build a very tiny comment
+        """build a very tiny comment
 
         Args:
             indent_line (TYPE): Description
             summary (TYPE): Description
+
+        Returns:
+            tuple: row and list lines
         """
         self.indent_line = indent_line
         # self.summary = summary
