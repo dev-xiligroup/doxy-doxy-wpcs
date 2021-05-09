@@ -199,7 +199,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                     if "insertline" in self.dict_anonymous[in_selection]:
                         if isinstance(self.dict_anonymous[in_selection]["insertline"], dict):
                             insertline = self.dict_anonymous[in_selection]["insertline"]
-                            nbl, linesp = CommentAnonym.insert_line(insertline["pos"],insertline["elements"])
+                            nbl, linesp = CommentAnonym.insert_paragraph(insertline["pos"],insertline["elements"])
                     length, lines_cursor = insert_comment_lines( linesp )
                 else:
                     print('no context and keys !')

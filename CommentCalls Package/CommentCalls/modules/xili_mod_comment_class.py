@@ -71,7 +71,7 @@ class CommentClass():
             pos (TYPE): Description
         """
         # test if possible
-        if elements:
+        if elements and elements[0] != "":
             elements.insert(0, ' * ')
         else:
             elements.insert(0, ' *') # empty line
@@ -83,6 +83,25 @@ class CommentClass():
             self.li += 1
         return self.li, self.linesp
             #
+    def insert_paragraph(self, pos, elements ):
+        """ Insert
+            multiples lines
+        Args:
+            pos (int): row based 0
+            elements (list): must be (or not) a list of list of elements
+        """
+        # test elements as list of lists
+        if isinstance(elements, list):
+            if isinstance(elements[0], list):
+                for line_element in elements:
+                    self.insert_line(pos, line_element )
+                    pos += 1
+            else:
+                self.insert_line(pos, elements ) # only one line
+        else:
+            print("elements is not a list")
+        return self.li, self.linesp #no change
+        #
     def pop_line(self, pos ):
         """Summary
         Args:
@@ -90,11 +109,11 @@ class CommentClass():
             pos (TYPE): Description
         """
         # test if possible
-        r = -1
+        r = ''
         if 1 < pos < self.li:
             r = self.linesp.pop( pos )
             self.li -= 1
-            return self.li, self.linesp
+        return self.li, self.linesp
 
     def first_line (self, li):
         linep = self.indent_line + "/**" # w/o return
