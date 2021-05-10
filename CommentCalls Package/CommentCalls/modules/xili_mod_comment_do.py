@@ -51,10 +51,10 @@ class CommentDo(CommentClass):
         elements = []
         li = self.append_line( elements, li )
         # print(self.calling_self.since)
-        elements = ["@since ", self.calling_self.since.format(now = self.now, dev = self.calling_self.dev_id)]
+        elements = ["@since", self.calling_self.since.format(now = self.now, dev = self.calling_self.dev_id)]
         li = self.append_line( elements, li )
         if self.calling_self.author:
-            elements = ["@author ", self.calling_self.author]
+            elements = ["@author", self.calling_self.author]
             li = self.append_line( elements, li )
         elements = []
         li = self.append_line( elements, li )
@@ -72,9 +72,6 @@ class CommentDo(CommentClass):
         dict_do_action = self.calling_self.dict_do_action[self.key_id]
         # self.summary = summary
         li = 0
-        # dict_comment = self.dict_do_action # for test from calling class
-        # searchfuncname = self.searchfuncname
-        # li = self.header_lines( li )
         fi = 0
         apply_params = re.findall(r"(\$\w+|\'\w+')", cur_line)
         for param in apply_params:
@@ -90,9 +87,7 @@ class CommentDo(CommentClass):
                         self.filter_name = param
                     else:
                         indice = 'string'
-                elements = [ "@param ", param, " ", dict_do_action['name_of_called_actions'][indice] ]
-                elements.insert(0, ' * ')
-                linep = self.build_line( elements )
+                elements = [ "@param", param, dict_do_action['name_of_called_actions'][indice] ]
 
             else:
                 xix = re.search(r"\[\s" + param.replace("$", r"\$") + r"\s\]", cur_line)
@@ -100,9 +95,9 @@ class CommentDo(CommentClass):
                     indice = 'index'
                 else:
                     indice = 'string'
-                elements = [ "@param <type> ", param.replace("$", r"\$"), " ", dict_do_action['arg_desc'][indice]]
-                elements.insert(0, ' * ')
-                linep = self.build_line( elements )
+                elements = [ "@param <type>", param.replace("$", r"\$"), dict_do_action['arg_desc'][indice]]
+            elements.insert(0, ' *')
+            linep = self.build_line( elements )
             if indice == 'index':
                 # modify l-1 because previous is an array
                 linel = self.linesp[li - 1]

@@ -37,7 +37,6 @@ class CommentApply(CommentClass):
         """
         dict_apply_filters = self.calling_self.dict_apply_filters[self.key_id]
 
-        # searchfuncname = self.calling_self.searchfuncname
         #
         li = self.first_line (li)
         if 'summary' in dict_apply_filters:
@@ -50,10 +49,10 @@ class CommentApply(CommentClass):
         elements = []
         li = self.append_line( elements, li )
         # print(self.calling_self.since)
-        elements = ["@since ", self.calling_self.since.format(now = self.now, dev = self.calling_self.dev_id)]
+        elements = ["@since", self.calling_self.since.format(now = self.now, dev = self.calling_self.dev_id)]
         li = self.append_line( elements, li )
         if self.calling_self.author:
-            elements = ["@author ", self.calling_self.author]
+            elements = ["@author", self.calling_self.author]
             li = self.append_line( elements, li )
         elements = []
         li = self.append_line( elements, li )
@@ -90,12 +89,12 @@ class CommentApply(CommentClass):
                     indice = 'string'
                 if x0:
                     if x0.start() < x.start():
-                        elements = [ "@param ", param, " ", dict_apply_filters['name_of_key'][indice], "."]
+                        elements = [ "@param", param, dict_apply_filters['name_of_key'][indice] + "."]
                     else:
                         # param contains the quotes
                         self.filter_name = param
-                        elements = [ "@param ", param, " ", dict_apply_filters['name_of_called_filters']]
-                    elements.insert(0, ' * ')
+                        elements = [ "@param", param, dict_apply_filters['name_of_called_filters']]
+                    elements.insert(0, ' *')
                     linep = self.build_line( elements )
             else:
                 the_param = param.replace("$", r"\$")
@@ -108,14 +107,14 @@ class CommentApply(CommentClass):
                     indice = 'string'
                 if x1:
                     if x1.start() < x.start():
-                        elements = [ "@var <type> ", param.replace("$", r"\$"), " ", dict_apply_filters['result_desc'][indice], "."]
+                        elements = [ "@var <type>", param.replace("$", r"\$"), dict_apply_filters['result_desc'][indice] + "."]
                     else:
                         fi = fi + 1
                         if fi == 1:
-                            elements = [ "@param <type> ", param.replace("$", r"\$"), " ", dict_apply_filters['first_param_desc']]
+                            elements = [ "@param <type>", param.replace("$", r"\$"), dict_apply_filters['first_param_desc']]
                         else:
-                            elements = [ "@param <type> ", param.replace("$", r"\$"), " ", dict_apply_filters['param_desc'][indice]]
-                    elements.insert(0, ' * ')
+                            elements = [ "@param <type>", param.replace("$", r"\$"), dict_apply_filters['param_desc'][indice]]
+                    elements.insert(0, ' *')
                     linep = self.build_line( elements )
 
             if indice == 'index':

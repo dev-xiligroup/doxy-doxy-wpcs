@@ -6,6 +6,7 @@
  # v 210503 - New name, New source’s structure
  # v 210505 - add final cursor position choice (begin or end of comment or previous in target line)
  # v 210508 - comment is now an objet (class) and 3 subclasses
+ # v 210510 - more methods in CommentClass - " ".join() replace loop
 
 To introduce modules and classes (and to compare with previous code Comment Filters), the new name of plugin is CommentCalls.
 """

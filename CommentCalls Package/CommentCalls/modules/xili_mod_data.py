@@ -14,7 +14,7 @@ person1 = {
 default_dict = {
     'apply_filters' : {
         'name_of_key': {'index': '[key]', 'string': ''},
-        'name_of_called_filters': '[Name of the called filters ].',
+        'name_of_called_filters': '[ Name of the called filters ].',
         'result_desc': {'index': '[key of result description]', 'string': '[result description]'},
         'first_param_desc': 'The original (non filtered) [description].',
         'param_desc': {'index': '[key description]', 'string': '[description]'}
@@ -27,7 +27,7 @@ default_dict = {
         'context':[
             {'key':'name', 'operator': 'not_regex_match',  'operand': '^prefix_'}
         ],
-        'key_or_param': {'index': '[key name] of ', 'string': ''},
+        'key_or_param': {'index': '[key name] of', 'string': ''},
         'name_key_or_string': {'index': '[key name].', 'string': '[the string].'},
         'first_param_desc': 'The first param [description].',
         'param_desc': {'index': '[key description]', 'string': '[description]'}
@@ -37,7 +37,7 @@ default_dict = {
             {'key':'name', 'operator': 'regex_match',  'operand': '^prefix_'}
         ],
         "summary": "Function call {funcname} with prefix",
-        'key_or_param': {'index': '[key name] of ', 'string': ''},
+        'key_or_param': {'index': '[key name] of', 'string': ''},
         'name_key_or_string': {'index': '[key name].', 'string': '[the string].'},
         'first_param_desc': 'The first param [description].',
         'param_desc': {'index': '[key description]', 'string': '[description]'}

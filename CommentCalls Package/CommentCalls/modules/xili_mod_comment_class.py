@@ -41,8 +41,9 @@ class CommentClass():
         """
         linep = self.indent_line
 
-        for element in elements:
-            linep += element
+        #for element in elements:
+            #linep += element
+        linep += " ".join(elements)
         linep += "\n"
 
         return linep
@@ -57,10 +58,10 @@ class CommentClass():
         Returns:
             int: new row
         """
-        if elements:
-            elements.insert(0, ' * ')
-        else:
-            elements.insert(0, ' *') # empty line
+        # if elements:
+            # elements.insert(0, ' *')
+        # else:
+        elements.insert(0, ' *') # empty line
         linep = CommentClass.build_line( self, elements )
         self.linesp.append(linep)
         l += 1
@@ -77,12 +78,8 @@ class CommentClass():
             row and list lines
         """
         # test if possible
-        if elements and elements[0] != "":
-            elements.insert(0, ' * ')
-        else:
-            elements.insert(0, ' *') # empty line
-
         if 1 < pos < self.li:
+            elements.insert(0, ' *')
             linep = CommentClass.build_line( self, elements )
 
             self.linesp.insert( pos, linep)
