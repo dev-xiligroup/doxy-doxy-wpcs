@@ -163,10 +163,6 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
             if in_selection > -1:
                 goto_start_previous()
                 begin_cursor = self.view.sel()[0]
-                #linesp = xili_mod_comm_do.Comment_do_action( self, cur_line, indent_line, now )
-                #length, lines_cursor = insert_comment_lines( linesp )
-                # Comment = xili_mod_comment.CommentClass( indent_line )
-                # print(Comment.build_comment(indent_line, "baratin du comment")) # empty_comment(0))
                 #
                 CommentDo = xili_mod_comment_do.CommentDo( indent_line, now, in_selection, self ) # sub class
                 nbl, linesp = CommentDo.build_comment( indent_line, cur_line )
@@ -213,6 +209,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
             # example in key binding
             #   { "keys": ["command+ctrl+i"],"command": "comment_calls", "args": {"cursor": [3,10] }}
             #
+        end_cursor = self.view.sel()[0]
         if 'cursor' in args:
             new_sel = []
             if args['cursor'] == 'previous':
@@ -238,5 +235,11 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 ))
             self.view.sel().clear()
             self.view.sel().add_all(new_sel)
+        region = self.view.lines(sublime.Region(begin_cursor.a, end_cursor.a))
+        if not isinstance(region, list):
+            region = [region]
 
+        self.view.add_regions("test", region, "region.greenish", "circle",
+            sublime.HIDDEN)
+           # flags=sublime.DRAW_EMPTY | sublime.DRAW_NO_FILL)
         # end of comment (end)
