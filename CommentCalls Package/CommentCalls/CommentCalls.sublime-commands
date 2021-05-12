@@ -1,0 +1,8 @@
+[
+    {
+        "caption": "CommentCalls: Settings",
+        "command":"cc_edit_settings",
+        "args": {"base_file":"${packages}/${module_name}/CommentCalls.sublime-settings",
+                 "user_file": "${packages}/User/CommentCalls.sublime-settings",}
+    }
+    ]

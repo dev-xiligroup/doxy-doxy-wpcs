@@ -1,0 +1,116 @@
+{
+	"anonymous":
+	[
+		{
+			"insertline":{ "pos": 2,
+				"elements":[[],
+				["1 ","2 lines"," ceci est un test avec 2 éléments"],
+				["3 ","ceci est un test avec 2 éléments"],
+				["2 ","ceci est un test avec 2 éléments","."]
+			]
+			},
+			"context":
+			[
+				{
+					"key": "name",
+					"operand": "^prefix_",
+					"operator": "regex_match"
+				},
+				{
+					"key": "line",
+					"operand": "\\+\\+\\.",
+					"operator": "not_regex_match"
+				}
+			],
+			"summary": "Function call {funcname} with prefix",
+			"first_param_desc": "The first param [description].",
+			"key_or_param":
+			{
+				"index": "[key name] of",
+				"string": ""
+			},
+			"name_key_or_string":
+			{
+				"index": "[key name].",
+				"string": "[the string]."
+			},
+			"param_desc":
+			{
+				"index": "[key description]",
+				"string": "[description]"
+			}
+		},
+		{
+			"context":
+			[
+				{
+					"key": "name",
+					"operand": "^xili_",
+					"operator": "not_regex_match"
+				}
+			],
+			"first_param_desc": "The not first param [description].",
+			"key_or_param":
+			{
+				"index": "[key name] of",
+				"string": ""
+			},
+			"name_key_or_string":
+			{
+				"index": "[key name].",
+				"string": "[the string]."
+			},
+			"param_desc":
+			{
+				"index": "[key description]",
+				"string": "[description]"
+			}
+		}
+	],
+	"apply_filters":
+	[
+		{
+		"context":
+			[
+				{
+					"key": "line",
+					"operand": "not comment",
+					"operator": "regex_match"
+				}
+			],
+		"summary": "Apply filters with name {filtername}",
+		"first_param_desc": "The original (non filtered) [description].",
+		"name_of_called_filters": "[Name of the called filters ].",
+		"name_of_key":
+		{
+			"index": "[key]",
+			"string": ""
+		},
+		"param_desc":
+		{
+			"index": "[key description]",
+			"string": "[description]"
+		},
+		"result_desc":
+		{
+			"index": "[key of result description]",
+			"string": "[result description]"
+		}
+	}
+	],
+	"do_action":
+	{
+		"popline": 4,
+		"arg_desc":
+		{
+			"index": "[key of argument]",
+			"string": "[description of argument passed to the callback]."
+		},
+		"name_of_called_actions":
+		{
+			"first": "[name of called actions].",
+			"index": "[key]",
+			"string": "!"
+		}
+	}
+}

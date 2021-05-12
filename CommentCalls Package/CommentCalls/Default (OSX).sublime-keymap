@@ -1,0 +1,12 @@
+// CommentCalls: Example of custom shortcuts (or use 'unbound' as command to remove existing one).
+[
+
+     { "keys": ["command+i"],"command": "comment_calls", "args": {
+      "cursor": "previous", "@since":"binding version" }}
+     ,
+     { "keys": ["command+alt+i"],"command": "comment_calls", "args": {
+      "cursor": "begin" }}
+      ,
+     { "keys": ["command+ctrl+i"],"command": "comment_calls", "args": {
+      "cursor": [3,10] }}
+]

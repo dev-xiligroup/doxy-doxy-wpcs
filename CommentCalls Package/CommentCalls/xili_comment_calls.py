@@ -7,6 +7,7 @@
  # v 210505 - add final cursor position choice (begin or end of comment or previous in target line)
  # v 210508 - comment is now an objet (class) and 3 subclasses
  # v 210510 - more methods in CommentClass - " ".join() replace loop
+ # v 210512 - possible to edit settings, key bindings and command Palette via menu or palette
 
 To introduce modules and classes (and to compare with previous code Comment Filters), the new name of plugin is CommentCalls.
 """
@@ -19,9 +20,11 @@ import sublime_plugin
 
 # needs a prefix with plugin folder and name w/o space.
 
-import CommentCalls.modules.xili_mod_calls_settings
-imp.reload( CommentCalls.modules.xili_mod_calls_settings ) # for dev
+import CommentCalls.modules.xili_mod_calls_settings as xili_mod_calls_settings
+imp.reload( xili_mod_calls_settings ) # for dev
 from CommentCalls.modules.xili_mod_calls_settings import CommentCallsSettings
+from CommentCalls.modules.xili_mod_calls_settings import CcEditSettingsCommand # run command inside
+
 import CommentCalls.modules.xili_mod_calls_select
 imp.reload( CommentCalls.modules.xili_mod_calls_select ) # for dev
 from CommentCalls.modules.xili_mod_calls_select import CommentCallsSelect
