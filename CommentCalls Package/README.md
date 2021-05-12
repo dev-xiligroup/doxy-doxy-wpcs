@@ -3,8 +3,13 @@
 This package is a new big upgrade of Comment Filters package. The main script uses 7 scripts in modules folder.
 
 ## history
+**v 210512** - edit settings and more
+- more methods in CommentClass - " ".join() replace loop
+- possible to edit settings, key bindings and command Palette via menu or palette… 
+
 **v 210508** - More OOP - a new branch named 00P-210508
-comment is now a class and sub classes with instanciate and build() method
+
+- comment is now a class and sub classes with instanciate and build() method
 
 **v 210503** - New name, New source’s structure
 
@@ -36,4 +41,5 @@ To introduce modules and classes (*and to compare with previous code*), the new 
 - classes are not always object. “self” args can be a source of confusion.
 - sub class and __init__
 - to test type, it is better to use isinstance().
+- how to use sublime command “edit_settings” for this plugin and add a command from a sub-module (see xili_mod_calls_settings)
 - …
