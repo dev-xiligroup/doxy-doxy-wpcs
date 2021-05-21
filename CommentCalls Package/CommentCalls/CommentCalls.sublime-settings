@@ -1,3 +1,5 @@
+// Default settings in "${packages}/CommentCalls/CommentCalls.sublime-settings",
+// and can be overridden in turn by syntax-specific settings.
 {
 	"anonymous":
 	[

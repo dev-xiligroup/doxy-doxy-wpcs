@@ -9,9 +9,10 @@ class CommentCallsSelect():
     """
         manage selections
         w/o __init__, this class is not really an object, the self is the calling main class "self"
+        fixed with @staticmethod now w/o self
     """
-
-    def is_selected (self, searchfuncallname, searchline, current_dict ):
+    @staticmethod
+    def is_selected (searchfuncallname, searchline, current_dict ):
         """Summary
 
         Args:

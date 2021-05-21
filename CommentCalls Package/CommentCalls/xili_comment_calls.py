@@ -8,7 +8,8 @@
  # v 210508 - comment is now an objet (class) and 3 subclasses
  # v 210510 - more methods in CommentClass - " ".join() replace loop
  # v 210512 - possible to edit settings, key bindings and command Palette via menu or palette
-
+ # v 210513 - hook on_post_save to help reloading components at the development stage
+ # v 210521 - fixes @staticmethod
 To introduce modules and classes (and to compare with previous code Comment Filters), the new name of plugin is CommentCalls.
 """
 
@@ -27,7 +28,7 @@ from CommentCalls.modules.xili_mod_calls_settings import CcEditSettingsCommand #
 
 import CommentCalls.modules.xili_mod_calls_select
 imp.reload( CommentCalls.modules.xili_mod_calls_select ) # for dev
-from CommentCalls.modules.xili_mod_calls_select import CommentCallsSelect
+from CommentCalls.modules.xili_mod_calls_select import CommentCallsSelect # @staticmethod
 
 import CommentCalls.modules.xili_mod_comment_class as xili_mod_comment
 imp.reload( xili_mod_comment ) # for dev
@@ -76,7 +77,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
             self.view.run_command("move", {"by": "lines", "extend": False, "forward": False})
 
         # a = xili_mod_settings.CommentCallsCommandSettings.settings( self )
-        a = CommentCallsSettings.settings( self )
+        a = CommentCallsSettings.settings() # @staticmethod
         # settings from module
         self.dict_apply_filters = a['apply_filters'] # xili_mod_settings.dict_apply_filters
         self.dict_do_action = a['do_action'] # xili_mod_settings.dict_do_action
@@ -141,7 +142,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
         if x and equal_pos and searchfuncname == 'apply_filters':
             # selection or not
             if isinstance(self.dict_apply_filters, list ):
-                in_selection = CommentCallsSelect.is_selected( self, searchfuncname, cur_line, self.dict_apply_filters )
+                in_selection = CommentCallsSelect.is_selected( searchfuncname, cur_line, self.dict_apply_filters )
             else:
                 in_selection = 0
                 self.dict_apply_filters = [ self.dict_apply_filters ]
@@ -159,7 +160,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
         elif not equal_pos and x and searchfuncname == 'do_action':
             # selection or not
             if isinstance(self.dict_do_action, list ):
-                in_selection = CommentCallsSelect.is_selected( self, searchfuncname, cur_line, self.dict_do_action )
+                in_selection = CommentCallsSelect.is_selected( searchfuncname, cur_line, self.dict_do_action )
             else:
                 in_selection = 0
                 self.dict_do_action = [ self.dict_do_action ]
@@ -183,6 +184,22 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
             print(self.searchfuncallname)
             # avoid to comment comments !
             xc = re.search(r"\/\/", cur_line)
+            pos1 = posi
+            while pos1 > 0:
+                pos = self.view.find_by_class(pos1, False, sublime.CLASS_LINE_START)
+                region = sublime.Region(pos, pos1)
+                pos1 = pos
+                text = self.view.substr(region)
+                match = re.search(r"function (\w+)\(",str(text), flags=re.S)
+                if match:
+                    if isinstance(args['cursor'],tuple):
+                        title = match.groups(1)[0] # first in tuple
+                    else:
+                        title = match.groups(1)
+                    # print(match.groups)
+                    print("The name of the function containing is ",title)
+                    break
+
             x = re.search(self.searchfuncallname, cur_line)
             if xc and xc.start() < x.start():
                 not_in_comment = False
@@ -190,7 +207,7 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
                 not_in_comment = True
             if not (("$" + self.searchfuncallname) in cur_line) and not (("'" + self.searchfuncallname + "'") in cur_line) and not_in_comment:
                 # select the good function name according settings
-                in_selection = CommentCallsSelect.is_selected( self, self.searchfuncallname, cur_line, self.dict_anonymous )
+                in_selection = CommentCallsSelect.is_selected( self.searchfuncallname, cur_line, self.dict_anonymous )
                 if in_selection > -1:
                     goto_start_previous()
                     begin_cursor = self.view.sel()[0]
@@ -246,3 +263,31 @@ class CommentCallsCommand(sublime_plugin.TextCommand):
             sublime.HIDDEN)
            # flags=sublime.DRAW_EMPTY | sublime.DRAW_NO_FILL)
         # end of comment (end)
+
+class DevRefreshListener(sublime_plugin.EventListener):
+
+    """ specific event for this plugin in dev
+    """
+
+    def on_post_save(self, view):
+        """tests if one of the files of plugin was saved !
+        """
+        in_dev_step = 'CommentCalls' in view.settings().get('development') # in current user's preferences
+        # print("Before test...")
+        # the catalog of the plugin's modules
+        plugin_files = [
+            "modules/xili_mod_calls_settings.py",
+            "modules/xili_mod_comment_anonym.py",
+            "modules/xili_mod_comment_apply.py",
+            "modules/xili_mod_comment_do.py",
+            "modules/xili_mod_comment_class.py",
+            "modules/xili_mod_data.py",
+            "modules/xili_mod_calls_select.py"
+        ]
+        if in_dev_step and view.file_name().endswith(".py"):
+            for plugin_file in plugin_files:
+                if view.file_name().endswith(plugin_file):
+                    print("After saving this file (view): ", view.file_name())
+                    sublime_plugin.reload_plugin('CommentCalls.xili_comment_calls') # the root of this plugin
+
+    # end

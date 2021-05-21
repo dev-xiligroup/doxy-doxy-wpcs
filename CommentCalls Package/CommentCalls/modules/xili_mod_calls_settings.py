@@ -13,8 +13,8 @@ class CommentCallsSettings():
 
     """ settings in class to load live (after sublime-settings modifications)
     """
-
-    def settings(self):
+    @staticmethod
+    def settings():
         """Summary
         Returns:
             TYPE: Description
@@ -58,12 +58,6 @@ class CommentCallsSettings():
             sublime.save_settings(my_settings_name)  # save default values
         return set_dict
 
-class CcaEditSettingsCommand(sublime_plugin.ApplicationCommand):
-
-    def run(self, base_file, user_file=None, default=None):
-        print(base_file)
-        pass
-
 class CcEditSettingsCommand(sublime_plugin.ApplicationCommand):
 
     """ Command used in key bindings
@@ -75,9 +69,9 @@ class CcEditSettingsCommand(sublime_plugin.ApplicationCommand):
         Thanks to Sebastien !
 
         Args:
-            base_file (path): Description
-            user_file (None, path): Description
-            default (None, string): Description
+            base_file (path): The file in plugin module
+            user_file (None, path): The file in User
+            default (None, string): Default content of file not exist
         """
         module_name = os.path.splitext(os.path.dirname(os.path.realpath(__file__)).split(os.sep)[-2])[0] # -2 because in /modules
 
